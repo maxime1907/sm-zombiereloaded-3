@@ -55,8 +55,8 @@ EventHook(bool:unhook = false)
         UnhookEvent("player_jump", EventPlayerJump);
         UnhookEvent("weapon_fire", EventWeaponFire);
 		
-		if (g_Game == Game_CSGO)
-			UnhookEvent("round_prestart", EventPrestart, EventHookMode_Pre);
+        if (g_Game == Game_CSGO)
+            UnhookEvent("round_prestart", EventPrestart, EventHookMode_Pre);
 
         // Stop after unhooking events.
         return;
@@ -73,8 +73,8 @@ EventHook(bool:unhook = false)
     HookEvent("player_jump", EventPlayerJump);
     HookEvent("weapon_fire", EventWeaponFire);
 	
-	if (g_Game == Game_CSGO)
-		HookEvent("round_prestart", EventPrestart, EventHookMode_Pre);
+    if (g_Game == Game_CSGO)
+        HookEvent("round_prestart", EventPrestart, EventHookMode_Pre);
 }
 
 /**
@@ -167,7 +167,7 @@ public Action:EventRoundEnd(Handle:event, const String:name[], bool:dontBroadcas
  */
 public Action:EventPrestart(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	InfectOnRoundEnd();
+    InfectOnRoundEnd();
 }
 
 /**

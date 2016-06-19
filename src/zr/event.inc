@@ -147,8 +147,8 @@ public Action:EventRoundEnd(Handle:event, const String:name[], bool:dontBroadcas
     WeaponsOnRoundEnd();
     RoundEndOnRoundEnd(reason);
 	
-	if (g_Game == Game_CSS)
-		InfectOnRoundEnd();
+    if (g_Game == Game_CSS)
+        InfectOnRoundEnd();
 	
     SEffectsOnRoundEnd();
     RespawnOnRoundEnd();

@@ -32,7 +32,7 @@
  *
  * ------------------------------------
  */
- 
+
 /**
  * Checks if the specified class is enabled.
  *
@@ -230,7 +230,42 @@ stock ClassGetGroup(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_P
             return strcopy(buffer, maxlen, ClassPlayerCache[index][Class_Group]);
         }
     }
-    
+
+    return -1;
+}
+
+/**
+ * Gets the class sourcemod flags required to use the class.
+ *
+ * @param index     Index of the class in a class cache or a client index,
+ *                  depending on the cache type specified.
+ * @param buffer    The destination string buffer.
+ * @param maxlen    The length of the destination string buffer.
+ * @param cachetype Optional. Specifies what class cache to read from. Options:
+ *                  ZR_CLASS_CACHE_ORIGINAL - Unchanced class data.
+ *                  ZR_CLASS_CACHE_MODIFIED - Changed/newest class data.
+ *                  ZR_CLASS_CACHE_PLAYER (default) - Player cache. If this one
+ *                  is used, index will be used as a client index.
+ * @return          Number of cells written. -1 on error.
+ */
+stock ClassGetSM_Flags(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PLAYER)
+{
+    switch (cachetype)
+    {
+        case ZR_CLASS_CACHE_ORIGINAL:
+        {
+            return strcopy(buffer, maxlen, ClassData[index][Class_SM_Flags]);
+        }
+        case ZR_CLASS_CACHE_MODIFIED:
+        {
+            return strcopy(buffer, maxlen, ClassDataCache[index][Class_SM_Flags]);
+        }
+        case ZR_CLASS_CACHE_PLAYER:
+        {
+            return strcopy(buffer, maxlen, ClassPlayerCache[index][Class_SM_Flags]);
+        }
+    }
+
     return -1;
 }
 
@@ -265,7 +300,7 @@ stock ClassGetName(index, String:buffer[], maxlen, cachetype = ZR_CLASS_CACHE_PL
             return strcopy(buffer, maxlen, ClassPlayerCache[index][Class_Name]);
         }
     }
-    
+
     return -1;
 }
 
@@ -518,7 +553,7 @@ stock ClassGetOverlayPath(index, String:buffer[], maxlen, cachetype = ZR_CLASS_C
             return strcopy(buffer, maxlen, ClassPlayerCache[index][Class_OverlayPath]);
         }
     }
-    return -1;    
+    return -1;
 }
 
 /**
@@ -1002,16 +1037,16 @@ stock Float:ClassGetSpeed(index, cachetype = ZR_CLASS_CACHE_PLAYER)
         {
             new Float:speed = ClassPlayerCache[index][Class_Speed];
             new Float:multiplier = ClassGetAttributeMultiplier(index, ClassM_Speed);
-            
+
             // Apply multiplier.
             if (ClassSpeedMethod == ClassSpeed_Prop)
             {
                 // Prop speed is an offset. Convert to absolute value.
                 speed += 250;
-                
+
                 // Apply multiplier.
                 speed *= multiplier;
-                
+
                 // Convert back to speed offset.
                 speed -= 250;
             }
@@ -1157,6 +1192,10 @@ stock ClassAttributeNameToFlag(const String:attributename[])
     {
         return ZR_CLASS_GROUP;
     }
+    else if (StrEqual(attributename, "sm_flags", false))
+    {
+        return ZR_CLASS_SM_FLAGS;
+    }
     else if (StrEqual(attributename, "name", false))
     {
         return ZR_CLASS_NAME;
@@ -1257,7 +1296,7 @@ stock ClassAttributeNameToFlag(const String:attributename[])
     {
         return ZR_CLASS_JUMP_DISTANCE;
     }
-    
+
     // Invalid attribute name.
     return -1;
 }
@@ -1308,7 +1347,7 @@ stock ClassMultipliers:ClassAttributeNameToMultiplier(const String:attributename
     {
         return ClassM_JumpDistance;
     }
-    
+
     // Invalid attribute name or not a multiplier.
     return ClassM_Invalid;
 }
@@ -1332,7 +1371,7 @@ stock ClassDataTypes:ClassGetAttributeType(attributeflag)
         {
             return ClassDataType_Boolean;
         }
-        
+
         // Integer.
         case ZR_CLASS_FLAGS,
               ZR_CLASS_MODEL_SKIN_INDEX,
@@ -1349,7 +1388,7 @@ stock ClassDataTypes:ClassGetAttributeType(attributeflag)
         {
             return ClassDataType_Integer;
         }
-        
+
         // Float.
         case ZR_CLASS_NAPALM_TIME,
               ZR_CLASS_HEALTH_REGEN_INTERVAL,
@@ -1360,7 +1399,7 @@ stock ClassDataTypes:ClassGetAttributeType(attributeflag)
         {
             return ClassDataType_Float;
         }
-        
+
         // String.
         case ZR_CLASS_GROUP,
               ZR_CLASS_NAME,
@@ -1372,7 +1411,7 @@ stock ClassDataTypes:ClassGetAttributeType(attributeflag)
             return ClassDataType_String;
         }
     }
-    
+
     // Invalid flag or multiple flags combined.
     return ClassDataType_InvalidType;
 }

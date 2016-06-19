@@ -77,7 +77,12 @@
 	{
 		"en"		"This feature requires that you are a human."
 	}
-	
+
+	"Must be in buyzone"
+	{
+		"en"		"This feature requires that you are in a buyzone."
+	}
+
 	"Increase by"
 	{
 		"#format"	"{1:s}"
@@ -393,6 +398,11 @@
 		"en"		"The last zombie has left the game, and has passed the infection on to you."
 	}
 
+	"Mother zombie infect cycle reset"
+	{
+		"en"			"The mother zombie infection cycle has been reset."
+	}
+
 	// Center Text
 
 	"Infect countdown"
@@ -426,10 +436,22 @@
 		"en"		"Player @green{1} @defaulthas been successfully infected."
 	}
 
+	"Infect command infect successful public"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"@lgreen{1}@default has infected @green{2}@default."
+	}
+
 	"Infect command infect mother successful"
 	{
 		"#format"	"{1:s}"
 		"en"		"Player @green{1} @defaulthas been successfully infected as the mother zombie."
+	}
+
+	"Infect command infect mother successful public"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"@lgreen{1}@default has infected @green{2}@default as the mother zombie."
 	}
 
 	"Infect command infect unsuccessful"
@@ -442,6 +464,12 @@
 	{
 		"#format"	"{1:s}"
 		"en"		"Player @green{1} @defaulthas been successfully brought back as a human."
+	}
+
+	"Infect command human successful public"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"@lgreen{1}@default has brought back @green{2}@default as a human."
 	}
 
 	"Infect command human unsuccessful"
@@ -610,14 +638,9 @@
 		"en"		"You may only carry {1} grenade(s) of this type."
 	}
 
-	"Weapons zmarket auto-rebuy toggle on"
+	"Weapons zmarket not enough money"
 	{
-		"en"		"Auto-rebuy has been enabled, your loadout will be automatically purchased for you each time you spawn."
-	}
-
-	"Weapons zmarket auto-rebuy toggle off"
-	{
-		"en"		"Auto-rebuy has been disabled."
+		"en"		"You have insufficient funds."
 	}
 
 	"Weapons zmarket updated loadout"
@@ -705,20 +728,14 @@
 		"en"		"Save Current Setup"
 	}
 
-	"Weapons menu zmarket main view loadout"
+	"Weapons menu zmarket main edit loadout"
 	{
-		"en"		"View Saved Setup"
+		"en"		"Edit Saved Setup"
 	}
 
 	"Weapons menu zmarket main rebuy"
 	{
 		"en"		"Buy Saved Setup"
-	}
-
-	"Weapons menu zmarket main auto-rebuy"
-	{
-		"#format"	"{1:s}"
-		"en"		"Auto-Rebuy: {1}"
 	}
 
 	"Weapons menu zmarket main weapons list"
@@ -728,7 +745,7 @@
 
 	"Weapons menu zmarket loadout title"
 	{
-		"en"		"ZMarket\nMy Current Setup:\nSelect weapon slot to clear.\nNote: Rebuy refers to these weapons."
+		"en"		"ZMarket\nMy Current Setup:\nSelect weapon slot to modify.\nNote: Rebuy refers to these weapons.\nYou will spawn with these weapons."
 	}
 
 	"Weapons menu zmarket loadout primary"
@@ -743,33 +760,15 @@
 		"en"		"Secondary: {1}"
 	}
 
-	"Weapons menu zmarket loadout melee"
+	"Weapons menu zmarket loadout default"
 	{
 		"#format"	"{1:s}"
-		"en"		"Melee: {1}"
+		"en"		"Default ({1})"
 	}
 
-	"Weapons menu zmarket loadout projectile"
+	"Weapons menu zmarket loadout weapons title"
 	{
-		"#format"	"{1:s}"
-		"en"		"Projectile: {1}"
-	}
-
-	"Weapons menu zmarket loadout explosive"
-	{
-		"#format"	"{1:s}"
-		"en"		"Explosive: {1}"
-	}
-
-	"Weapons menu zmarket loadout nvgs"
-	{
-		"#format"	"{1:s}"
-		"en"		"NVGs: {1}"
-	}
-
-	"Weapons menu zmarket loadout empty"
-	{
-		"en"		"(None)"
+		"en"		"ZMarket\nSelect Weapon Loadout:"
 	}
 
 	"Weapons menu zmarket types title"
@@ -1032,6 +1031,12 @@
 	{
 		"#format"	"{1:s}"
 		"en"		"Player {1} was successfully spawned."
+	}
+
+	"ZSpawn command force successful public"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"@lgreen{1}@default has spawned @green{2}@default as a @lgreen{3}@default."
 	}
 
 	"ZSpawn command force unsuccessful"

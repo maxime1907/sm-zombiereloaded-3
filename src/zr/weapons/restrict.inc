@@ -39,11 +39,6 @@ enum RestrictData
 }
 
 /**
- * Array that stores the "HookID" to be later unhooked on player disconnect.
- */
-new g_iCanUseHookID[MAXPLAYERS + 1] = {-1, ...};
-
-/**
  * Array to block any client from picking up weapons.
  */
 new bool:g_bRestrictBlockWeapon[MAXPLAYERS + 1];
@@ -77,7 +72,7 @@ RestrictInit()
 
 /**
  * Auto-create a list of types loaded by weapons module.
- */ 
+ */
 RestrictLoad()
 {
     // If array exists, then destroy it.
@@ -85,31 +80,31 @@ RestrictLoad()
     {
         CloseHandle(arrayWeaponTypes);
     }
-    
+
     // Initialize array.
     arrayWeaponTypes = CreateArray(WEAPONS_MAX_LENGTH);
-    
+
     decl String:weapontype[WEAPONS_MAX_LENGTH];
     new String:weapontypes[WEAPONS_RESTRICT_MAX_TYPES][WEAPONS_MAX_LENGTH];
-    
+
     // x = Array index.
     new size = GetArraySize(arrayWeapons);
     for (new x = 0; x < size; x++)
     {
         WeaponsGetType(x, weapontype, sizeof(weapontype));
-        
+
         ExplodeString(weapontype, ",", weapontypes, sizeof(weapontypes), sizeof(weapontypes[]));
         for (new y = 0; y < WEAPONS_RESTRICT_MAX_TYPES; y++)
         {
             // Cut off whitespace.
             TrimString(weapontypes[y]);
-            
+
             // If we've reached the end of the weapon's types, then stop.
             if (!weapontypes[y][0])
             {
                 break;
             }
-            
+
             // If the weapon type isn't in the main array, then push it in.
             if (FindStringInArray(arrayWeaponTypes, weapontypes[y]) == -1)
             {
@@ -132,69 +127,47 @@ RestrictOnCommandsCreate()
 
 /**
  * Client is joining the server.
- * 
+ *
  * @param client    The client index.
  */
 RestrictClientInit(client)
 {
-    // Hook "Weapon_CanUse" on client.
-    #if defined USE_SDKHOOKS
-        SDKHook(client, SDKHook_WeaponCanUse, RestrictCanUse);
-        
-        // Set dummy value so it think it's hooked.
-        g_iCanUseHookID[client] = 1;
-    #else
-        g_iCanUseHookID[client] = ZRTools_HookWeapon_CanUse(client, RestrictCanUse);
-    #endif
-    
-    // Reset block weapons flag.
+    SDKHook(client, SDKHook_WeaponCanUse, RestrictCanUse);
     g_bRestrictBlockWeapon[client] = false;
 }
 
 /**
  * Unhook Weapon_CanUse function on a client.
- * 
+ *
  * @param client    The client index.
  */
 RestrictOnClientDisconnect(client)
 {
-    // Unhook "Weapon_CanUse" callback, and reset variable.
-    if (g_iCanUseHookID[client] != -1)
-    {
-        #if defined USE_SDKHOOKS
-            SDKUnhook(client, SDKHook_WeaponCanUse, RestrictCanUse);
-        #else
-            ZRTools_UnhookWeapon_CanUse(g_iCanUseHookID[client]);
-        #endif
-        
-        g_iCanUseHookID[client] = -1;
-    }
+    SDKUnhook(client, SDKHook_WeaponCanUse, RestrictCanUse);
 }
 
 /**
  * Client is spawning into the game.
- * 
+ *
  * @param client    The client index.
  */
 RestrictOnClientSpawn(client)
 {
     // Re-hook "canuse" on client.
-    #if defined USE_SDKHOOKS
-        SDKUnhook(client, SDKHook_WeaponCanUse, RestrictCanUse);     // <--- What happens if it's not already hooked???
-        SDKHook(client, SDKHook_WeaponCanUse, RestrictCanUse);
-        g_iCanUseHookID[client] = 1;
-    #else
-        ZRTools_UnhookWeapon_CanUse(g_iCanUseHookID[client]);
-        g_iCanUseHookID[client] = ZRTools_HookWeapon_CanUse(client, RestrictCanUse);
-    #endif
-    
+    SDKUnhook(client, SDKHook_WeaponCanUse, RestrictCanUse);
+    SDKHook(client, SDKHook_WeaponCanUse, RestrictCanUse);
+
     // H4x.  Unfortunately I can't disable this flag early enough for CS:S to give start USP/Glock.
     // So I have to give BOOTLEG weapons.  (Sorry Valve)
+
+    // CS:GO TODO: Move this into separate functions for CS:S and CS:GO. And
+    //             call the correct function.
+
     if (g_bRestrictBlockWeapon[client])
     {
         // Reset block weapons flag.
         g_bRestrictBlockWeapon[client] = false;
-        
+
         if (ZRIsClientOnTeam(client, CS_TEAM_T))
         {
             GivePlayerItem(client, WEAPONS_SPAWN_T_WEAPON);
@@ -216,7 +189,7 @@ RestrictOnRoundEnd()
     {
         return;
     }
-    
+
     // x = Client index.
     for (new x = 1; x <= MaxClients; x++)
     {
@@ -225,13 +198,13 @@ RestrictOnRoundEnd()
         {
             continue;
         }
-        
+
         // If client is a human, then stop.
         if (InfectIsClientHuman(x))
         {
             continue;
         }
-        
+
         // Enable block weapon flag.
         g_bRestrictBlockWeapon[x] = true;
     }
@@ -240,7 +213,7 @@ RestrictOnRoundEnd()
 /**
  * Command callback function for the "buy" command
  * Used to block use of this command under certain conditions.
- * 
+ *
  * @param client    The client index.
  * @param argc      Argument count.
  */
@@ -251,52 +224,52 @@ public Action:RestrictBuyCommand(client, argc)
     {
         return Plugin_Continue;
     }
-    
+
     // If the client isn't in a buyzone, then stop.
     if (!WeaponsIsClientInBuyZone(client))
     {
         return Plugin_Continue;
     }
-    
+
     // If player is a zombie, then block command.
     if (InfectIsClientInfected(client))
     {
         TranslationPrintToChat(client, "Zombie cant use weapon");
-        
+
         // Block command
         return Plugin_Handled;
     }
-    
+
     decl String:weapon[WEAPONS_MAX_LENGTH];
     GetCmdArg(1, weapon, sizeof(weapon));
-    
+
     // If the weapon is restricted, then prevent pickup.
     decl String:weaponname[WEAPONS_MAX_LENGTH];
     new weaponindex = WeaponsEntityToDisplay(weapon, weaponname, sizeof(weaponname), true);
-    
+
     // If weapon isn't configged, then allow pickup.
     if (weaponindex == -1)
     {
         // Allow command.
         return Plugin_Continue;
     }
-    
+
     // If weapon is restricted, then stop.
     if (RestrictIsWeaponRestricted(weaponindex))
     {
         TranslationPrintToChat(client, "Weapon is restricted", weaponname);
-        
+
         // Block command.
         return Plugin_Handled;
     }
-    
+
     // Allow command.
     return Plugin_Continue;
 }
 
 /**
  * Restricts (or unrestricts) a given weapon or weapon type.
- * 
+ *
  * @param restrict      True to restrict, false to unrestrict.
  * @param target        Weapon or weapon type to restrict/unrestrict.
  * @param single        True if a single weapon is being restricted, false if weapon type.
@@ -308,41 +281,41 @@ RestrictQuery:RestrictWeapon(bool:restrict, const String:target[], &bool:single 
 {
     // Copy 'target' to 'returntarget' to be possibly changed later.
     strcopy(returntarget, maxlen, target);
-    
+
     // Find index of the given weapon type.
     new typeindex = RestrictTypeToIndex(returntarget);
-    
+
     // Single weapon.
     if (typeindex == -1)
     {
         single = true;
-        
+
         new weaponindex = WeaponsNameToIndex(returntarget);
-        
+
         // If weapon index is invalid, then return invalid.
         if (weaponindex == -1)
         {
             return Query_Invalid;
         }
-        
+
         // Return proper weapon name.
         WeaponsGetName(weaponindex, returntarget, maxlen);
-        
+
         // If weapon is untoggleable, then return locked.
         if (!WeaponsGetToggleable(weaponindex))
         {
             return Query_Locked;
         }
-        
+
         // If weapon restriction is redundant then return stopped.
         if (RestrictIsWeaponRestricted(weaponindex) == restrict)
         {
             return Query_Stopped;
         }
-        
+
         // Set weapon's restricted state.
         RestrictSetWeaponRestricted(weaponindex, false, restrict);
-        
+
         // Successfully restricted weapon.
         return Query_Successful;
     }
@@ -350,35 +323,35 @@ RestrictQuery:RestrictWeapon(bool:restrict, const String:target[], &bool:single 
     else
     {
         single = false;
-        
+
         // Get all weapons in the given type.
         new Handle:arrayTypeWeapons;
         new count = RestrictGetTypeWeapons(typeindex, arrayTypeWeapons);
-        
+
         // Return proper weapon name.
         RestrictWeaponTypeGetName(typeindex, returntarget, maxlen);
-        
+
         // If weapon restriction is redundant then return stopped.
         if (RestrictIsTypeUniform(restrict, typeindex))
         {
             return Query_Stopped;
         }
-        
+
         for (new x = 0; x < count; x++)
         {
             // Get weapon index.
             new weaponindex = GetArrayCell(arrayTypeWeapons, x);
-            
+
             // If weapon is untoggleable, then stop.
             if (!WeaponsGetToggleable(weaponindex))
             {
                 continue;
             }
-            
+
             // Set weapon's restricted state.
             RestrictSetWeaponRestricted(weaponindex, false, restrict);
         }
-        
+
         // Successfully restricted weapon type.
         return Query_Successful;
     }
@@ -464,20 +437,20 @@ RestrictPrintQueryResponse(client, RestrictQuery:query, bool:single, bool:restri
 stock RestrictTypeToIndex(const String:type[])
 {
     decl String:typename[WEAPONS_MAX_LENGTH];
-    
+
     // x = Array index.
     new size = GetArraySize(arrayWeaponTypes);
     for (new x = 0; x < size; x++)
     {
         RestrictWeaponTypeGetName(x, typename, sizeof(typename));
-        
+
         // If types match, then return index.
         if (StrEqual(type, typename, false))
         {
             return x;
         }
     }
-    
+
     // Type doesn't exist.
     return -1;
 }
@@ -496,7 +469,7 @@ stock RestrictWeaponTypeGetName(index, String:weapontype[], maxlen)
 
 /**
  * Returns an array containing all weapon indexes matching the given type.
- * 
+ *
  * @param index             The weapon type index.
  * @param arrayTypeWeapons  A handle to store array containing matching weapons.
  *                          Don't forget to close this!
@@ -505,33 +478,33 @@ stock RestrictGetTypeWeapons(index, &Handle:arrayTypeWeapons)
 {
     // Create array to hold weapons of the given type.
     arrayTypeWeapons = CreateArray();
-    
+
     // Get name of the weapon type at given index.
     decl String:typename[WEAPONS_MAX_LENGTH];
     RestrictWeaponTypeGetName(index, typename, sizeof(typename));
-    
+
     new count;
     decl String:weapontype[WEAPONS_MAX_LENGTH];
     new String:weapontypes[WEAPONS_RESTRICT_MAX_TYPES][WEAPONS_MAX_LENGTH];
-    
+
     // x = Array index.
     new size = GetArraySize(arrayWeapons);
     for (new x = 0; x < size; x++)
     {
         WeaponsGetType(x, weapontype, sizeof(weapontype));
-        
+
         ExplodeString(weapontype, ",", weapontypes, sizeof(weapontypes), sizeof(weapontypes[]));
         for (new y = 0; y < WEAPONS_RESTRICT_MAX_TYPES; y++)
         {
             // Cut off whitespace.
             TrimString(weapontypes[y]);
-            
+
             // If we've reached the end of the weapon's types, then stop.
             if (!weapontypes[y][0])
             {
                 break;
             }
-            
+
             // If types match, then add weapon to array.
             if (StrEqual(typename, weapontypes[y], false))
             {
@@ -540,14 +513,14 @@ stock RestrictGetTypeWeapons(index, &Handle:arrayTypeWeapons)
             }
         }
     }
-    
+
     // Return number of weapons of the given type.
     return count;
 }
 
 /**
  * Gets the restricted status on a weapon.
- * 
+ *
  * @param index     The weapon index.
  * @param toggle    If true, the value is toggled, otherwise 'restrict' param is used.
  * @param restrict  (Only if 'toggle' is 'false') Restricted status of the weapon.
@@ -556,7 +529,7 @@ stock RestrictSetWeaponRestricted(index, bool:toggle, bool:restrict = false)
 {
     // Get array handle of weapon at given index.
     new Handle:arrayWeapon = GetArrayCell(arrayWeapons, index);
-    
+
     // Set restricted status.
     new bool:value = toggle ? !RestrictIsWeaponRestricted(index) : restrict;
     SetArrayCell(arrayWeapon, _:WEAPONS_DATA_RESTRICTED, value);
@@ -564,7 +537,7 @@ stock RestrictSetWeaponRestricted(index, bool:toggle, bool:restrict = false)
 
 /**
  * Gets the restricted status on a weapon.
- * 
+ *
  * @param index     The weapon index.
  * @return          True if weapon is restricted, false if not.
  */
@@ -572,14 +545,14 @@ stock bool:RestrictIsWeaponRestricted(index)
 {
     // Get array handle of weapon at given index.
     new Handle:arrayWeapon = GetArrayCell(arrayWeapons, index);
-    
+
     // Return restricted status.
     return bool:GetArrayCell(arrayWeapon, _:WEAPONS_DATA_RESTRICTED);
 }
 
 /**
  * Used to check if all weapons of a type are restricted.
- * 
+ *
  * @param restricted    True to check if all weapons of given type are restricted.
  * @param index         The weapon type index.
  * @return              True if all weapons of the given type are restricted or not, false if not.
@@ -588,20 +561,20 @@ stock bool:RestrictIsTypeUniform(bool:restricted, index)
 {
     new Handle:arrayTypeWeapons;
     new count = RestrictGetTypeWeapons(index, arrayTypeWeapons);
-    
+
     // x = array index
     for (new x = 0; x < count; x++)
     {
         // Get weapon index to check restricted status of.
         new weaponindex = GetArrayCell(arrayTypeWeapons, x);
-        
+
         // If weapon is toggleable and it's not uniform with the given status, then return false.
         if (WeaponsGetToggleable(weaponindex) && RestrictIsWeaponRestricted(weaponindex) != restricted)
         {
             return false;
         }
     }
-    
+
     // All weapons are restricted, so return true.
     return true;
 }
@@ -610,72 +583,71 @@ stock bool:RestrictIsTypeUniform(bool:restricted, index)
  * Hook callback, called when a player is trying to pick up a weapon.
  * @param client    The client index.
  * @param weapon    The weapon index.
- * @return          Return ZRTools_Handled to stop weapon pickup.
- *                  ZRTools_Continue to allow weapon pickup.
+ * @return          Return Plugin_Handled to stop weapon pickup.
+ *                  Plugin_Continue to allow weapon pickup.
  */
-#if defined USE_SDKHOOKS
 public Action:RestrictCanUse(client, weapon)
-#else
-public ZRTools_Action:RestrictCanUse(client, weapon)
-#endif
 {
+    // WARNING: This function is called _frequently_. Every game tick per
+    //          player, I think. Make sure any code here is optimized.
+
     new String:weaponentity[WEAPONS_MAX_LENGTH];
     GetEdictClassname(weapon, weaponentity, sizeof(weaponentity));
-    
+
     // If weapon is a knife, then allow pickup.
     if (StrEqual(weaponentity, "weapon_knife"))
     {
-        return ACTION_CONTINUE;
+        return Plugin_Continue;
     }
-    
+
     // If the player is a zombie, then prevent pickup.
     if (InfectIsClientInfected(client))
     {
-        return ACTION_HANDLED;
+        return Plugin_Handled;
     }
-    
+
     // If client is flagged for not picking up weapons, then stop.
     if (g_bRestrictBlockWeapon[client])
     {
-        return ACTION_HANDLED;
+        return Plugin_Handled;
     }
-    
+
     // If weapons module is disabled, then stop.
     new bool:weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
     if (!weapons)
     {
-        return ACTION_CONTINUE;
+        return Plugin_Continue;
     }
-    
+
     // If restrict module is disabled, then stop.
     new bool:restrict = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT]);
     if (!restrict)
     {
-        return ACTION_CONTINUE;
+        return Plugin_Continue;
     }
-    
+
     // If the weapon is restricted, then prevent pickup.
     decl String:weaponname[WEAPONS_MAX_LENGTH];
     new weaponindex = WeaponsEntityToDisplay(weaponentity, weaponname, sizeof(weaponname));
-    
+
     // If weapon isn't configged, then allow pickup.
     if (weaponindex == -1)
     {
         // Allow pickup.
-        return ACTION_CONTINUE;
+        return Plugin_Continue;
     }
-    
+
     // If weapon is restricted, then stop.
     if (RestrictIsWeaponRestricted(weaponindex))
     {
-        return ACTION_HANDLED;
+        return Plugin_Handled;
     }
-    
+
     // Forward event to weapons module.
     WeaponsOnItemPickup(client, weapon);
-    
+
     // Allow pickup.
-    return ACTION_CONTINUE;
+    return Plugin_Continue;
 }
 
 /**
@@ -685,7 +657,7 @@ public ZRTools_Action:RestrictCanUse(client, weapon)
 /**
  * Command callback (zr_restrict)
  * Restricts a weapon or group
- *   
+ *
  * @param client    The client index.
  * @param argc      Argument count.
  */
@@ -697,7 +669,7 @@ public Action:RestrictCommand(client, argc)
         TranslationReplyToCommand(client, "No access to command");
         return Plugin_Handled;
     }
-    
+
     // If weapons module is disabled, then stop.
     new bool:weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
     if (!weapons)
@@ -706,7 +678,7 @@ public Action:RestrictCommand(client, argc)
         TranslationReplyToCommand(client, "Feature is disabled");
         return Plugin_Handled;
     }
-    
+
     // If restrict module is disabled, then stop.
     new bool:restrict = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT]);
     if (!restrict)
@@ -715,38 +687,38 @@ public Action:RestrictCommand(client, argc)
         TranslationReplyToCommand(client, "Feature is disabled");
         return Plugin_Handled;
     }
-    
+
     // If not enough arguments given, then stop.
     if (argc < 1)
     {
         TranslationReplyToCommand(client, "Weapons command restrict syntax");
         return Plugin_Handled;
     }
-    
+
     decl String:target[WEAPONS_MAX_LENGTH];
-    
+
     new args = GetCmdArgs();
     for (new x = 1; x <= args; x++)
     {
         // Get target to restrict.
         GetCmdArg(x, target, sizeof(target));
-        
+
         // Query restrict on this target, and get a result back.
         new bool:single;
         decl String:returntarget[WEAPONS_MAX_LENGTH];
         new RestrictQuery:query = RestrictWeapon(true, target, single, returntarget, sizeof(returntarget));
-        
+
         // Print response to client(s).
         RestrictPrintQueryResponse(client, query, single, true, returntarget);
     }
-    
+
     return Plugin_Handled;
 }
 
 /**
  * Command callback (zr_unrestrict)
  * Unrestricts a weapon or group
- *   
+ *
  * @param client    The client index.
  * @param argc      Argument count.
  */
@@ -758,7 +730,7 @@ public Action:UnrestrictCommand(client, argc)
         TranslationReplyToCommand(client, "No access to command");
         return Plugin_Handled;
     }
-    
+
     // If weapons module is disabled, then stop.
     new bool:weapons = GetConVarBool(g_hCvarsList[CVAR_WEAPONS]);
     if (!weapons)
@@ -767,7 +739,7 @@ public Action:UnrestrictCommand(client, argc)
         TranslationReplyToCommand(client, "Feature is disabled");
         return Plugin_Handled;
     }
-    
+
     // If restrict module is disabled, then stop.
     new bool:restrict = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_RESTRICT]);
     if (!restrict)
@@ -776,31 +748,31 @@ public Action:UnrestrictCommand(client, argc)
         TranslationReplyToCommand(client, "Feature is disabled");
         return Plugin_Handled;
     }
-    
+
     // If not enough arguments given, then stop.
     if (argc < 1)
     {
         TranslationReplyToCommand(client, "Weapons command unrestrict syntax");
         return Plugin_Handled;
     }
-    
+
     // arg1 = weapon being restricted
     decl String:target[WEAPONS_MAX_LENGTH];
-    
+
     new args = GetCmdArgs();
     for (new x = 1; x <= args; x++)
     {
         // Get target to restrict.
         GetCmdArg(x, target, sizeof(target));
-        
+
         // Query unrestrict on this target, and get a result back.
         new bool:single;
         decl String:returntarget[WEAPONS_MAX_LENGTH];
         new RestrictQuery:query = RestrictWeapon(false, target, single, returntarget, sizeof(returntarget));
-        
+
         // Print response to client(s).
         RestrictPrintQueryResponse(client, query, single, false, returntarget);
     }
-    
+
     return Plugin_Handled;
 }

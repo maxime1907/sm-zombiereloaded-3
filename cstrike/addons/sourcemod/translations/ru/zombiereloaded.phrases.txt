@@ -75,7 +75,12 @@
 	{
 		"ru"		"Данная функция доступна только, когда вы человек."
 	}
-	
+
+	"Must be in buyzone"
+	{
+		"ru"		"Данная функция доступна только, когда вы находитесь в зоне закупки."
+	}
+
 	"Increase by"
 	{
 		"ru"		"Увеличить на {1}"
@@ -377,6 +382,11 @@
 		"ru"		"Последний зомби покинул игру, поэтому вам досталась его инфекция."
 	}
 
+	"Mother zombie infect cycle reset"
+	{
+		"ru"		"The mother zombie infection cycle has been reset." // TODO: Translate
+	}
+
 	// Center Text
 
 	"Infect countdown"
@@ -408,9 +418,19 @@
 		"ru"		"Игрок @green{1}@default был успешно инфицирован."
 	}
 
+	"Infect command infect successful public"
+	{
+		"ru"		"@lgreen{1}@default сделал @green{2}@default зомби."
+	}
+
 	"Infect command infect mother successful"
 	{
 		"ru"		"Игрок @green{1}@default был успешно инфицирован и стал первым зомби."
+	}
+
+	"Infect command infect mother successful public"
+	{
+		"ru"		"@lgreen{1}@default сделал @green{2}@default первым зомби."
 	}
 
 	"Infect command infect unsuccessful"
@@ -421,6 +441,11 @@
 	"Infect command human successful"
 	{
 		"ru"		"Игрок @green{1}@default был успешно превращен обратно в человека."
+	}
+
+	"Infect command human successful public"
+	{
+		"ru"		"@lgreen{1}@default сделал @green{2}@default человеком."
 	}
 
 	"Infect command human unsuccessful"
@@ -573,14 +598,9 @@
 		"ru"		"Вы можете нести только {1} гранаты данного типа."
 	}
 
-	"Weapons zmarket auto-rebuy toggle on"
+	"Weapons zmarket not enough money"
 	{
-		"ru"		"Авто-покупка была включена, ваша амуниция будет автоматически закупаться при каждом респавне."
-	}
-
-	"Weapons zmarket auto-rebuy toggle off"
-	{
-		"ru"		"Авто-покупка была отключена."
+		"ru"		"У вас недостаточно денег для покупки данного оружия."
 	}
 
 	"Weapons zmarket updated loadout"
@@ -664,19 +684,14 @@
 		"ru"		"Сохранить текущее оружие"
 	}
 
-	"Weapons menu zmarket main view loadout"
+	"Weapons menu zmarket main edit loadout"
 	{
-		"ru"		"Просмотр текущй амуниции"
+		"ru"		"Текущая амуниция"
 	}
 
 	"Weapons menu zmarket main rebuy"
 	{
 		"ru"		"Снова купить мою амуницию"
-	}
-
-	"Weapons menu zmarket main auto-rebuy"
-	{
-		"ru"		"Авто-покупка: {1}"
 	}
 
 	"Weapons menu zmarket main weapons list"
@@ -686,7 +701,7 @@
 
 	"Weapons menu zmarket loadout title"
 	{
-		"ru"		"ZMarket\nМоя текущая амуниция:\nВыберите слот для очистки.\nПримечаие: Авто-покупка использует данный список."
+		"ru"		"ZMarket\nМоя текущая амуниция:\nВыберите слот для изменения.\nПримечание: Авто-покупка использует данный список."
 	}
 
 	"Weapons menu zmarket loadout primary"
@@ -699,29 +714,14 @@
 		"ru"		"Пистолет: {1}"
 	}
 
-	"Weapons menu zmarket loadout melee"
+	"Weapons menu zmarket loadout default"
 	{
-		"ru"		"Ближний бой: {1}"
+		"ru"		"{1} (по умолчанию)"
 	}
 
-	"Weapons menu zmarket loadout projectile"
+	"Weapons menu zmarket loadout weapons title"
 	{
-		"ru"		"Снаряды: {1}"
-	}
-
-	"Weapons menu zmarket loadout explosive"
-	{
-		"ru"		"Взрывчатка: {1}"
-	}
-
-	"Weapons menu zmarket loadout nvgs"
-	{
-		"ru"		"Ночное видение: {1}"
-	}
-
-	"Weapons menu zmarket loadout empty"
-	{
-		"ru"		"(Пусто)"
+		"ru"		"ZMarket\nВыберите оружие:"
 	}
 
 	"Weapons menu zmarket types title"
@@ -968,6 +968,11 @@
 	"ZSpawn command force successful"
 	{
 		"ru"		"Игрок {1} был успешно воскрешен."
+	}
+
+	"ZSpawn command force successful public"
+	{
+		"ru"		"@lgreen{1}@default возродил @green{2}@default как @lgreen{3}@default."
 	}
 
 	"ZSpawn command force unsuccessful"

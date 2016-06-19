@@ -25,28 +25,16 @@
  * ============================================================================
  */
 
-// Comment to use ZR Tools Extension, otherwise SDK Hooks Extension will be used.
-#define USE_SDKHOOKS
-
 #pragma semicolon 1
 #include <sourcemod>
 #include <sdktools>
 #include <clientprefs>
 #include <cstrike>
+#define INCLUDED_BY_ZOMBIERELOADED
+#include <zombiereloaded>
+#undef INCLUDED_BY_ZOMBIERELOADED
 
-#if defined USE_SDKHOOKS
-    #include <sdkhooks>
-    
-    #define ACTION_CONTINUE     Plugin_Continue
-    #define ACTION_CHANGED      Plugin_Changed
-    #define ACTION_HANDLED      Plugin_Handled
-#else
-    #include <zrtools>
-    
-    #define ACTION_CONTINUE     ZRTools_Continue
-    #define ACTION_CHANGED      ZRTools_Changed
-    #define ACTION_HANDLED      ZRTools_Handled
-#endif
+#include <sdkhooks>
 
 #define VERSION "3.1"
 
@@ -118,6 +106,8 @@
 
 #include "zr/api/api"
 
+new bool:g_bLate = false;
+
 /**
  * Record plugin info.
  */
@@ -132,7 +122,7 @@ public Plugin:myinfo =
 
 /**
  * Called before plugin is loaded.
- * 
+ *
  * @param myself    The plugin handle.
  * @param late      True if the plugin was loaded after map change, false on map start.
  * @param error     Error message if load failed.
@@ -144,7 +134,12 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 {
     // Load API.
     APIInit();
-    
+
+    // Register library
+    RegPluginLibrary("zombiereloaded");
+
+    g_bLate = late;
+
     // Let plugin load.
     return APLRes_Success;
 }
@@ -155,7 +150,7 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 public OnPluginStart()
 {
     UpdateGameFolder();
-    
+
     // Forward event to modules.
     LogInit();          // Doesn't depend on CVARs.
     TranslationInit();
@@ -247,10 +242,34 @@ public OnConfigsExecuted()
     ClassOnConfigsExecuted();
     ClassLoad();
     VolLoad();
-    
+
     // Forward event to modules. (OnModulesLoaded)
     ConfigOnModulesLoaded();
     ClassOnModulesLoaded();
+
+    if(g_bLate)
+    {
+        for(new client = 1; client <= MaxClients; client++)
+        {
+            if(!IsClientConnected(client))
+                continue;
+
+            OnClientConnected(client);
+
+            if(IsClientInGame(client))
+            {
+                OnClientPutInServer(client);
+
+                if(IsClientAuthorized(client))
+                    OnClientPostAdminCheck(client);
+            }
+
+            if(AreClientCookiesCached(client))
+                OnClientCookiesCached(client);
+        }
+
+        g_bLate = false;
+    }
 }
 
 /**
@@ -264,7 +283,7 @@ public OnClientConnected(client)
 
 /**
  * Client is joining the server.
- * 
+ *
  * @param client    The client index.
  */
 public OnClientPutInServer(client)
@@ -286,7 +305,7 @@ public OnClientPutInServer(client)
 
 /**
  * Called once a client's saved cookies have been loaded from the database.
- * 
+ *
  * @param client		Client index.
  */
 public OnClientCookiesCached(client)
@@ -296,7 +315,7 @@ public OnClientCookiesCached(client)
     {
         return;
     }
-    
+
     // Forward "OnCookiesCached" event to modules.
     ClassOnCookiesCached(client);
     WeaponsOnCookiesCached(client);
@@ -304,10 +323,10 @@ public OnClientCookiesCached(client)
 }
 
 /**
- * Called once a client is authorized and fully in-game, and 
- * after all post-connection authorizations have been performed.  
+ * Called once a client is authorized and fully in-game, and
+ * after all post-connection authorizations have been performed.
  *
- * This callback is gauranteed to occur on all clients, and always 
+ * This callback is gauranteed to occur on all clients, and always
  * after each OnClientPutInServer() call.
  *
  * @param client		Client index.
@@ -321,7 +340,7 @@ public OnClientPostAdminCheck(client)
 
 /**
  * Client is leaving the server.
- * 
+ *
  * @param client    The client index.
  */
 public OnClientDisconnect(client)

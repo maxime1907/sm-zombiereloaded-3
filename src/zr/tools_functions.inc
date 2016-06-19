@@ -43,28 +43,31 @@ stock ToolsClientVelocity(client, Float:vecVelocity[3], bool:apply = true, bool:
         {
             vecVelocity[x] = GetEntDataFloat(client, g_iToolsVelocity + (x*4));
         }
-        
+
         // Stop here.
         return;
     }
-    
+
     // If stack is true, then add client's velocity.
     if (stack)
     {
         // Get client's velocity.
         new Float:vecClientVelocity[3];
-        
+
         // x = vector component.
         for (new x = 0; x < 3; x++)
         {
             vecClientVelocity[x] = GetEntDataFloat(client, g_iToolsVelocity + (x*4));
         }
-        
+
         AddVectors(vecClientVelocity, vecVelocity, vecVelocity);
     }
-    
+
     // Apply velocity on client.
-    TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, vecVelocity);
+    if(g_hToolsSetAbsVelocity == INVALID_HANDLE) // Fallback to old one
+        TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, vecVelocity);
+    else // Fixes trigger OnStartTouch/OnEndTouch bug
+        SDKCall(g_hToolsSetAbsVelocity, client, vecVelocity);
 }
 
 /**
@@ -107,7 +110,7 @@ stock bool:ToolsGetClientNightVision(client, bool:ownership = true)
     {
         return bool:GetEntData(client, g_iToolsHasNightVision, 1);
     }
-    
+
     return bool:GetEntData(client, g_iToolsNightVisionOn, 1);
 }
 
@@ -124,11 +127,11 @@ stock ToolsSetClientNightVision(client, bool:enable, bool:ownership = true)
     if (ownership)
     {
         SetEntData(client, g_iToolsHasNightVision, enable, 1, true);
-        
+
         // Stop here.
         return;
     }
-    
+
     SetEntData(client, g_iToolsNightVisionOn, enable, 1, true);
 }
 
@@ -144,10 +147,10 @@ stock ToolsSetClientDefaultFOV(client, FOV)
 
 /**
  * Get or set a client's score or deaths.
- * 
+ *
  * @param client    The client index.
- * @param score     True to look at score, false to look at deaths.  
- * @param apply     True to set scores or death, false to get. 
+ * @param score     True to look at score, false to look at deaths.
+ * @param apply     True to set scores or death, false to get.
  * @param value     The value of the client's score or deaths.
  * @return          The score or death count of the client, -1 if setting.
  */
@@ -166,7 +169,7 @@ stock ToolsClientScore(client, bool:score = true, bool:apply = true, value = 0)
             return GetEntProp(client, Prop_Data, "m_iDeaths");
         }
     }
-    
+
     // If score is true, then set client's score.
     if (score)
     {
@@ -177,14 +180,14 @@ stock ToolsClientScore(client, bool:score = true, bool:apply = true, value = 0)
     {
         SetEntProp(client, Prop_Data, "m_iDeaths", value);
     }
-    
+
     // We set the client's score or deaths.
     return -1;
 }
 
 /**
  * Set a client's alpha value.
- * 
+ *
  * @param client    The client index.
  * @param alpha     The alpha value to set client's alpha to. (0-255)
  * @param weapons   Apply alpha to all client's weapons.
@@ -193,10 +196,14 @@ stock ToolsSetClientAlpha(client, alpha)
 {
     // Turn rendermode on, on the client.
     SetEntityRenderMode(client, RENDER_TRANSALPHA);
-    
+
+    // Get current client colors.
+    new color[4];
+    ToolsGetEntityColor(client, color);
+
     // Set alpha value on the client.
-    SetEntityRenderColor(client, _, _, _, alpha);
-    
+    SetEntityRenderColor(client, color[0], color[1], color[2], alpha);
+
     // Forward event to modules.
     WeaponAlphaOnClientAlphaChanged(client, alpha);
 }
@@ -211,22 +218,53 @@ stock ToolsGetEntityAlpha(entity)
 {
 	static bool:gotconfig = false;
 	static String:prop[32];
-	
+
 	if (!gotconfig)
 	{
 		new Handle:gc = LoadGameConfigFile("core.games");
 		new bool:exists = GameConfGetKeyValue(gc, "m_clrRender", prop, sizeof(prop));
 		CloseHandle(gc);
-		
+
 		if (!exists)
 		{
 			strcopy(prop, sizeof(prop), "m_clrRender");
 		}
-		
+
 		gotconfig = true;
 	}
-	
+
 	new offset = GetEntSendPropOffs(entity, prop);
-	
+
 	return GetEntData(entity, offset + 3, 1);
+}
+
+/**
+ * Gets an entity's color and alpha.
+ *
+ * @param client    The client index.
+ * @param color     4 dimensional array where [r,g,b,a] values are stored
+ */
+stock ToolsGetEntityColor(entity, color[4])
+{
+    static bool:gotconfig = false;
+    static String:prop[32];
+
+    if (!gotconfig)
+    {
+        new Handle:gc = LoadGameConfigFile("core.games");
+        new bool:exists = GameConfGetKeyValue(gc, "m_clrRender", prop, sizeof(prop));
+        CloseHandle(gc);
+
+        if (!exists)
+        {
+            strcopy(prop, sizeof(prop), "m_clrRender");
+        }
+
+        gotconfig = true;
+    }
+
+    new offset = GetEntSendPropOffs(entity, prop);
+
+    for (new i = 0; i < 4; i++)
+        color[i] = GetEntData(entity, offset + i, 1);
 }

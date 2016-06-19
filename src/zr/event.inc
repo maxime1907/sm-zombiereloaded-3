@@ -54,6 +54,9 @@ EventHook(bool:unhook = false)
         UnhookEvent("player_death", EventPlayerDeath);
         UnhookEvent("player_jump", EventPlayerJump);
         UnhookEvent("weapon_fire", EventWeaponFire);
+		
+		if (g_Game == Game_CSGO)
+			UnhookEvent("round_prestart", EventPrestart, EventHookMode_Pre);
 
         // Stop after unhooking events.
         return;
@@ -69,6 +72,9 @@ EventHook(bool:unhook = false)
     HookEvent("player_death", EventPlayerDeath);
     HookEvent("player_jump", EventPlayerJump);
     HookEvent("weapon_fire", EventWeaponFire);
+	
+	if (g_Game == Game_CSGO)
+		HookEvent("round_prestart", EventPrestart, EventHookMode_Pre);
 }
 
 /**
@@ -140,12 +146,28 @@ public Action:EventRoundEnd(Handle:event, const String:name[], bool:dontBroadcas
     // Forward event to modules.
     WeaponsOnRoundEnd();
     RoundEndOnRoundEnd(reason);
-    InfectOnRoundEnd();
+	
+	if (g_Game == Game_CSS)
+		InfectOnRoundEnd();
+	
     SEffectsOnRoundEnd();
     RespawnOnRoundEnd();
     ZSpawnOnRoundEnd();
     VolOnRoundEnd();
     ImmunityOnRoundEnd();
+}
+
+/**
+ * Event callback (round_prestart)
+ * The round is prestarting.
+ * 
+ * @param event     The event handle.
+ * @param name      Name of the event.
+ * @dontBroadcast   If true, event is broadcasted to all clients, false if not.
+ */
+public Action:EventPrestart(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	InfectOnRoundEnd();
 }
 
 /**

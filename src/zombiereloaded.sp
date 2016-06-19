@@ -110,7 +110,7 @@
 #include "zr/napalm"
 #include "zr/jumpboost"
 #include "zr/zspawn"
-#include "zr/ztele"
+#include "zr/ztele/ztele"
 #include "zr/zhp"
 #include "zr/zcookies"
 #include "zr/volfeatures/volfeatures"
@@ -279,7 +279,7 @@ public OnClientPutInServer(client)
     AntiStickClientInit(client);
     SpawnProtectClientInit(client);
     RespawnClientInit(client);
-    ZTeleClientInit(client);
+    ZTele_OnClientPutInServer(client);
     ZHPClientInit(client);
     ImmunityClientInit(client);
 }
@@ -335,6 +335,7 @@ public OnClientDisconnect(client)
     ZSpawnOnClientDisconnect(client);
     VolOnPlayerDisconnect(client);
     ImmunityOnClientDisconnect(client);
+    ZTele_OnClientDisconnect(client);
 }
 
 /**

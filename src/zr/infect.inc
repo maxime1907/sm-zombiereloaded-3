@@ -158,7 +158,7 @@ InfectOnClientDisconnect(client)
     }
     
     // If zombie hasn't spawned, then stop.
-    if (!g_bZombieSpawned)
+    if (!InfectHasZombieSpawned())
     {
         return;
     }
@@ -270,13 +270,10 @@ InfectOnClientSpawn(client)
     bZombie[client] = false;
     
     // Check if client is spawning on the terrorist team.
-    if (ZRIsClientOnTeam(client, CS_TEAM_T))
+    if (ZRIsClientOnTeam(client, CS_TEAM_T) && InfectHasZombieSpawned())
     {
-        if (g_bZombieSpawned)
-        {
-            CS_SwitchTeam(client, CS_TEAM_CT);
-            CS_RespawnPlayer(client);
-        }
+        CS_SwitchTeam(client, CS_TEAM_CT);
+        CS_RespawnPlayer(client);
     }
 }
 
@@ -385,7 +382,7 @@ InfectOnRoundFreezeEnd()
     ZREndTimer(tInfectCountdown);
     
     // If the zombie has spawned already (had to be through admin) then stop.
-    if (g_bZombieSpawned)
+    if (InfectHasZombieSpawned())
     {
         return;
     }
@@ -432,12 +429,6 @@ InfectOnRoundEnd()
     // x = client index.
     for (new x = 1; x <=  MaxClients; x++)
     {
-        // If client isn't in-game, then stop.
-        if (!IsClientInGame(x))
-        {
-            continue;
-        }
-        
         // Disable zombie flag on client.
         bZombie[x] = false;
     }
@@ -779,7 +770,7 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
         new bool:zombierespawn = GetConVarBool(g_hCvarsList[CVAR_INFECT_MZOMBIE_RESPAWN]);
         if(zombierespawn)
         {
-            ZTeleTeleportClient(client);
+            ZTele_TeleportClient(client);
         }
     }
     // Check override.
@@ -787,7 +778,7 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
     {
         if (respawnoverride && respawn)
         {
-            ZTeleTeleportClient(client);
+            ZTele_TeleportClient(client);
         }
     }
     
@@ -799,7 +790,7 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
     RoundEndOnClientInfected();
     DamageOnClientInfected(client, motherinfect);
     SEffectsOnClientInfected(client);
-    ZTeleOnClientInfected(client);
+    ZTele_OnClientInfected(client);
     ZHPOnClientInfected(client);
     APIOnClientInfected(client, attacker, motherinfect, respawnoverride, respawn);
     ImmunityOnClientInfected(client);
@@ -839,7 +830,7 @@ InfectZombieToHuman(client, bool:respawn = false, bool:protect = false)
     // Forward event to modules.
     ClassReloadPlayer(client);
     RoundEndOnClientInfected();
-    ZTeleOnClientInfected(client);
+    ZTele_OnClientInfected(client);
     
     // Give human a new knife. (If you leave the old one there will be glitches with the knife positioning)
     new knife = GetPlayerWeaponSlot(client, _:Slot_Melee);
@@ -853,7 +844,7 @@ InfectZombieToHuman(client, bool:respawn = false, bool:protect = false)
     // Check if we should respawn the client.
     if (respawn)
     {
-        ZTeleTeleportClient(client);
+        ZTele_TeleportClient(client);
     }
     
     // Check if we should spawn protect the client.
@@ -1080,6 +1071,11 @@ public InfectMenuClientsHandle(Handle:menu_infect_clients, MenuAction:action, cl
     }
 }
 
+bool:InfectHasZombieSpawned()
+{
+    return g_bZombieSpawned;
+}
+
 /**
  * Returns if a client is infected.
  * 
@@ -1127,7 +1123,7 @@ bool:InfectIsClientHuman(client)
  */
 stock InfectManualInfect(client, targets[], count, bool:respawnoverride = false, bool:respawn = false)
 {
-    new bool:zombiespawned = g_bZombieSpawned;
+    new bool:zombiespawned = InfectHasZombieSpawned();
     
     // If zombie hasn't spawned, then make targetted player(s) mother zombies.
     if (!zombiespawned)

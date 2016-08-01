@@ -507,6 +507,7 @@ CvarsCreate()
     g_hCvarsList[CVAR_ZHP_DEFAULT]                      =    CreateConVar("zr_zhp_default",     "1",    "Default ZHP toggle state set on connecting player. [Dependency: zr_zhp]");
 
     ZTele_OnCvarsCreate();
+    SoundEffects_OnCvarsCreate();
 
     // Auto-generate config file if it doesn't exist, then execute.
     AutoExecConfig(true, "zombiereloaded", "sourcemod/zombiereloaded");

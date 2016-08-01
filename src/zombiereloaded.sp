@@ -36,6 +36,8 @@
 
 #include <sdkhooks>
 
+#include <external/emitsoundany>
+
 #define VERSION "3.1"
 
 // Comment this line to exclude version info command. Enable this if you have

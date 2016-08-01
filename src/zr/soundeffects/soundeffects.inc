@@ -168,12 +168,18 @@ SEffectsOnClientHuman(client)
 SEffectsEmitAmbientSound(const String:sound[], Float:ambientvolume = 1.0, client = -1)
 {
     // Precache sound before playing.
-    PrecacheSound(sound);
+    if (g_Game == Game_CSGO)
+        PrecacheSoundAny(sound);
+    else
+        PrecacheSound(sound);
 
     if (ZRIsClientValid(client))
     {
         // Emit ambient sound.
-        EmitSoundToClient(client, sound, SOUND_FROM_PLAYER, SOUND_AMBIENT_CHANNEL, _, _, ambientvolume);
+        if (g_Game == Game_CSGO)
+    	   EmitSoundToClientAny(client, sound, SOUND_FROM_PLAYER, SOUND_AMBIENT_CHANNEL, _, _, ambientvolume);
+        else
+           EmitSoundToClient(client, sound, SOUND_FROM_PLAYER, SOUND_AMBIENT_CHANNEL, _, _, ambientvolume);
 
         // Flag client that sound is playing.
         bAmbientSoundsIsPlaying[client] = true;
@@ -189,7 +195,10 @@ SEffectsEmitAmbientSound(const String:sound[], Float:ambientvolume = 1.0, client
             }
 
             // Emit ambient sound.
-            EmitSoundToClient(x, sound, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, ambientvolume);
+    	    if (g_Game == Game_CSGO)
+                EmitSoundToClientAny(x, sound, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, ambientvolume);
+            else
+                EmitSoundToClient(x, sound, SOUND_FROM_PLAYER, SNDCHAN_AUTO, _, _, ambientvolume); 
         }
     }
 }
@@ -211,7 +220,10 @@ SEffectsStopAmbientSound(const String:sound[])
         }
 
         // Stop ambient sound.
-        StopSound(x, SOUND_AMBIENT_CHANNEL, sound);
+        if (g_Game == Game_CSGO)
+            StopSoundAny(x, SOUND_AMBIENT_CHANNEL, sound);
+        else
+            StopSound(x, SOUND_AMBIENT_CHANNEL, sound);
     }
 }
 
@@ -231,8 +243,14 @@ SEffectsStopAmbientSound(const String:sound[])
 SEffectsEmitSoundFromClient(client, const String:sound[], level = SNDLEVEL_NORMAL)
 {
     // Precache sound before playing.
-    PrecacheSound(sound);
+    if (g_Game == Game_CSGO)
+        PrecacheSoundAny(sound);
+    else
+        PrecacheSound(sound);
 
     // Emit sound from client.
-    EmitSoundToAll(sound, client, _, level);
+    if (g_Game == Game_CSGO)
+        EmitSoundToAllAny(sound, client, _, level); 
+    else
+        EmitSoundToAll(sound, client, _, level);
 }

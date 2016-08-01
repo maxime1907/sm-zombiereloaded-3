@@ -26,31 +26,11 @@
  */
 
 /**
- * @section Defines for min/max moaning sound file index.
+ * @section Defines for min moaning, groan and death sound files index.
  */
-#define SOUND_MOAN_PATH "npc/zombie/zombie_voice_idle%d.wav" // %d is sound file index
 #define SOUND_MOAN_MIN 1
-#define SOUND_MOAN_MAX 14
-/**
- * @endsection
- */
-
-/**
- * @section Defines for min/max groan sound file index.
- */
-#define SOUND_GROAN_PATH "npc/zombie/zombie_pain%d.wav" // %d is sound file index
 #define SOUND_GROAN_MIN 1
-#define SOUND_GROAN_MAX 6
-/**
- * @endsection
- */
-
-/**
- * @section Defines for min/max death sound file index.
- */
-#define SOUND_DEATH_PATH "npc/zombie/zombie_die%d.wav" // %d is sound file index
 #define SOUND_DEATH_MIN 1
-#define SOUND_DEATH_MAX 3
 /**
  * @endsection
  */
@@ -64,6 +44,8 @@ enum ZombieSounds
     Groan, /** When zombie is hurt */
     Death, /** When a zombie is killed */
 }
+
+#include "zr/soundeffects/cvars"
 
 /**
  * Array for storing zombie moaning timer handles per client.
@@ -251,30 +233,30 @@ bool:ZombieSoundsGetRandomSound(String:sound[], ZombieSounds:soundtype)
         {
             // Copy min and max
             soundmin = SOUND_MOAN_MIN;
-            soundmax = SOUND_MOAN_MAX;
+            soundmax = SoundEffects_GetSoundEffectsMax(Moan);
 
-            // Copy path
-            strcopy(soundpath, sizeof(soundpath), SOUND_MOAN_PATH);
+            // Read path
+            SoundEffects_GetSoundEffectsPath(soundpath, Moan);
         }
         // Find groan sound. (zombie shot)
         case Groan:
         {
             // Copy min and max
             soundmin = SOUND_GROAN_MIN;
-            soundmax = SOUND_GROAN_MAX;
+            soundmax = SoundEffects_GetSoundEffectsMax(Groan);
 
-            // Copy path
-            strcopy(soundpath, sizeof(soundpath), SOUND_GROAN_PATH);
+            // Read path
+            SoundEffects_GetSoundEffectsPath(soundpath, Groan);
         }
         // Find death sound.
         case Death:
         {
             // Copy min and max
             soundmin = SOUND_DEATH_MIN;
-            soundmax = SOUND_DEATH_MAX;
+            soundmax = SoundEffects_GetSoundEffectsMax(Death);
 
-            // Copy path
-            strcopy(soundpath, sizeof(soundpath), SOUND_DEATH_PATH);
+            // Read path
+            SoundEffects_GetSoundEffectsPath(soundpath, Death);
         }
         // Invalid case given.
         default:

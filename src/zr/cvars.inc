@@ -140,17 +140,6 @@ enum CvarsList
     Handle:CVAR_VEFFECTS_RAGDOLL_REMOVE,
     Handle:CVAR_VEFFECTS_RAGDOLL_DISSOLVE,
     Handle:CVAR_VEFFECTS_RAGDOLL_DELAY,
-    Handle:CVAR_VOICE,
-    Handle:CVAR_VOICE_ZOMBIES_MUTE,
-    Handle:CVAR_SEFFECTS_MOAN,
-    Handle:CVAR_SEFFECTS_GROAN,
-    Handle:CVAR_SEFFECTS_DEATH,
-    Handle:CVAR_SEFFECTS_COMMAND_LIMIT,
-    Handle:CVAR_SEFFECTS_COMMAND_TIMESPAN,
-    Handle:CVAR_AMBIENTSOUNDS,
-    Handle:CVAR_AMBIENTSOUNDS_FILE,
-    Handle:CVAR_AMBIENTSOUNDS_LENGTH,
-    Handle:CVAR_AMBIENTSOUNDS_VOLUME,
     Handle:CVAR_ANTISTICK,
     Handle:CVAR_ANTISTICK_DEFAULT_WIDTH,
     Handle:CVAR_ANTISTICK_FILE_PATH,
@@ -342,7 +331,7 @@ CvarsCreate()
     g_hCvarsList[CVAR_INFECT_SHAKE_AMP]                 =    CreateConVar("zr_infect_shake_amp",            "15.0",                             "Amplitude of shaking effect. [Dependency: zr_infect_shake]");
     g_hCvarsList[CVAR_INFECT_SHAKE_FREQUENCY]           =    CreateConVar("zr_infect_shake_frequency",      "1.0",                              "Frequency of shaking effect. [Dependency: zr_infect_shake]");
     g_hCvarsList[CVAR_INFECT_SHAKE_DURATION]            =    CreateConVar("zr_infect_shake_duration",       "5.0",                              "Duration of shaking effect. [Dependency: zr_infect_shake]");
-    g_hCvarsList[CVAR_INFECT_EVENT_WEAPON]              =    CreateConVar("zr_infect_event_weapon",         "zombie_claws_of_death",             "Weapon icon used when the death event is sent for a player that gets infected.");
+    g_hCvarsList[CVAR_INFECT_EVENT_WEAPON]              =    CreateConVar("zr_infect_event_weapon",         "zombie_claws_of_death",            "Weapon icon used when the death event is sent for a player that gets infected.");
 
 
     // ===========================
@@ -419,29 +408,6 @@ CvarsCreate()
     g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_DISSOLVE]        =    CreateConVar("zr_veffects_ragdoll_dissolve",   "-1",                   "The ragdoll removal effect. ['-2' = Effectless removal | '-1' = Random effect | '0' = Energy dissolve | '1' = Heavy electrical dissolve | '2' = Light electrical dissolve | '3' = Core dissolve | Dependency: zr_veffects_ragdoll_remove]");
     g_hCvarsList[CVAR_VEFFECTS_RAGDOLL_DELAY]           =    CreateConVar("zr_veffects_ragdoll_delay",      "0.5",                  "Time to wait before removing the ragdoll. [Dependency: zr_veffects_ragdoll_remove]");
 
-
-    // ===========================
-    // Sound Effects (module)
-    // ===========================
-
-    // Voice
-    g_hCvarsList[CVAR_VOICE]                            =    CreateConVar("zr_voice",                   "0",                            "(Incomplete) Modify sv_alltalk to obey zombie/human teams instead of t/ct.");
-    g_hCvarsList[CVAR_VOICE_ZOMBIES_MUTE]               =    CreateConVar("zr_voice_zombies_mute",      "0",                            "(Incomplete) Only allow humans to communicate, block verbal zombie communication.");
-
-    // Zombie Sounds
-    g_hCvarsList[CVAR_SEFFECTS_MOAN]                    =    CreateConVar("zr_seffects_moan",               "30.0",                     "Time between emission of a moan sound from a zombie.");
-    g_hCvarsList[CVAR_SEFFECTS_GROAN]                   =    CreateConVar("zr_seffects_groan",              "5",                        "The probability that a groan sound will be emitted from a zombie when shot. ['100' = 1% chance | '50' = 2% chance | '1' = 100% chance]");
-    g_hCvarsList[CVAR_SEFFECTS_DEATH]                   =    CreateConVar("zr_seffects_death",              "1",                        "Emit a death sound when a zombie dies.");
-    g_hCvarsList[CVAR_SEFFECTS_COMMAND_LIMIT]           =    CreateConVar("zr_seffects_command_limit",      "4",                        "Number of sound commands allowed within the time span, or total limit if time span is disabled. ['0' = Disable sound command limit]");
-    g_hCvarsList[CVAR_SEFFECTS_COMMAND_TIMESPAN]        =    CreateConVar("zr_seffects_command_timespan",   "10",                       "Time span for sound command limiter (in seconds). ['0' = Disable time span check | positive number = Time span]");
-
-    // Ambient Sounds
-    g_hCvarsList[CVAR_AMBIENTSOUNDS]                    =    CreateConVar("zr_ambientsounds",           "1",                            "Play an ambient sound to all players during gameplay.");
-    g_hCvarsList[CVAR_AMBIENTSOUNDS_FILE]               =    CreateConVar("zr_ambientsounds_file",      "ambient/zr/zr_ambience.mp3",   "Sound file, relative to \"sound\" folder, to play as ambience.  This file is automatically downloaded to clients. [Dependency: zr_ambientsounds]");
-    g_hCvarsList[CVAR_AMBIENTSOUNDS_LENGTH]             =    CreateConVar("zr_ambientsounds_length",    "60.0",                         "Length of the ambient sound. [Dependency: zr_ambientsounds]");
-    g_hCvarsList[CVAR_AMBIENTSOUNDS_VOLUME]             =    CreateConVar("zr_ambientsounds_volume",    "0.8",                          "Volume of the ambient sound. [1.0 = Max volume | 0.0001 = Not audible | Dependency: zr_ambientsounds]");
-
-
     // ===========================
     // Anti-Stick (module)
     // ===========================
@@ -509,7 +475,7 @@ CvarsCreate()
     g_hCvarsList[CVAR_ZHP_DEFAULT]                      =    CreateConVar("zr_zhp_default",     "1",    "Default ZHP toggle state set on connecting player. [Dependency: zr_zhp]");
 
     ZTele_OnCvarsCreate();
-    SoundEffects_OnCvarsCreate();
+    SEffects_OnCvarsCreate();
 
     // Auto-generate config file if it doesn't exist, then execute.
     AutoExecConfig(true, "zombiereloaded", "sourcemod/zombiereloaded");

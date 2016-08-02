@@ -125,7 +125,7 @@ ZombieSoundsOnClientDeath(client)
     }
 
     // If death sound cvar is disabled, then stop.
-    new bool:death = GetConVarBool(g_hCvarsList[CVAR_SEFFECTS_DEATH]);
+    new bool:death = SEffects_GetDeathEmission();
     if (!death)
     {
         return;
@@ -152,7 +152,7 @@ ZombieSoundsOnClientHurt(client)
     }
 
     // Get groan factor, if 0, then stop.
-    new groan = GetConVarInt(g_hCvarsList[CVAR_SEFFECTS_GROAN]);
+    new groan = SEffects_GetGroanProbability();
     if (!groan)
     {
         return;
@@ -177,7 +177,7 @@ ZombieSoundsOnClientHurt(client)
 ZombieSoundsOnClientInfected(client)
 {
     // If interval is set to 0, then stop.
-    new Float:interval = GetConVarFloat(g_hCvarsList[CVAR_SEFFECTS_MOAN]);
+    new Float:interval = SEffects_GetMoanTime();
     if (!interval)
     {
         return;
@@ -233,30 +233,30 @@ bool:ZombieSoundsGetRandomSound(String:sound[], ZombieSounds:soundtype)
         {
             // Copy min and max
             soundmin = SOUND_MOAN_MIN;
-            soundmax = SoundEffects_GetSoundEffectsMax(Moan);
+            soundmax = SEffects_GetMax(Moan);
 
             // Read path
-            SoundEffects_GetSoundEffectsPath(soundpath, Moan);
+            SEffects_GetPath(soundpath, Moan);
         }
         // Find groan sound. (zombie shot)
         case Groan:
         {
             // Copy min and max
             soundmin = SOUND_GROAN_MIN;
-            soundmax = SoundEffects_GetSoundEffectsMax(Groan);
+            soundmax = SEffects_GetMax(Groan);
 
             // Read path
-            SoundEffects_GetSoundEffectsPath(soundpath, Groan);
+            SEffects_GetPath(soundpath, Groan);
         }
         // Find death sound.
         case Death:
         {
             // Copy min and max
             soundmin = SOUND_DEATH_MIN;
-            soundmax = SoundEffects_GetSoundEffectsMax(Death);
+            soundmax = SEffects_GetMax(Death);
 
             // Read path
-            SoundEffects_GetSoundEffectsPath(soundpath, Death);
+            SEffects_GetPath(soundpath, Death);
         }
         // Invalid case given.
         default:
@@ -344,7 +344,7 @@ ZombieSoundsCmdTimerCheck(client)
     // Only create timer if it doesn't exist.
     if (g_hSEffectsCommandTimer[client] == INVALID_HANDLE)
     {
-        new Float:timespan = GetConVarFloat(g_hCvarsList[CVAR_SEFFECTS_COMMAND_TIMESPAN]);
+        new Float:timespan = SEffects_GetCommandTimespan();
 
         // Only create timer if time span is enabled.
         if (timespan > 0.0)
@@ -384,7 +384,7 @@ ZombieSoundsResetCmdTimers()
  */
 bool:ZombieSoundsCommandAllowed(client)
 {
-    new limit = GetConVarInt(g_hCvarsList[CVAR_SEFFECTS_COMMAND_LIMIT]);
+    new limit = SEffects_GetCommandLimit();
 
     if (limit <= 0 ||
         g_SEffectsCommandCount[client] < limit)

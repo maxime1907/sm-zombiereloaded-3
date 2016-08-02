@@ -40,6 +40,9 @@
 #define WEAPONAMMO_HEGRENADE_LIMIT      1
 #define WEAPONAMMO_FLASHBANG_LIMIT      2
 #define WEAPONAMMO_SMOKEGRENADE_LIMIT   1
+#define WEAPONAMMO_INCENDIARY_LIMIT		1
+#define WEAPONAMMO_MOLOTOV_LIMIT		1
+#define WEAPONAMMO_DECOY_LIMIT			1
 /**
  * @endsection
  */
@@ -68,6 +71,9 @@ enum WeaponAmmoGrenadeType
     GrenadeType_HEGrenade       = 11,   /** HEGrenade slot */
     GrenadeType_Flashbang       = 12,   /** Flashbang slot. */
     GrenadeType_Smokegrenade    = 13,   /** Smokegrenade slot. */
+    GrenadeType_Incendiary		= 14,	/** Inc Grenade slot. */
+	GrenadeType_Molotov			= 15,	/** Molotov slot. */
+	GrenadeType_Decoy			= 16,	/** Decoy slot. */
 }
 
 /**
@@ -200,6 +206,18 @@ stock WeaponAmmoGrenadeType:WeaponAmmoEntityToGrenadeType(const String:weaponent
     {
         return GrenadeType_Smokegrenade;
     }
+    else if (StrEqual(weaponentity, "weapon_incgrenade"))
+    {
+        return GrenadeType_Incendiary;
+    }
+	else if (StrEqual(weaponentity, "weapon_molotov"))
+    {
+        return GrenadeType_Molotov;
+    }
+	else if (StrEqual(weaponentity, "weapon_decoy"))
+    {
+        return GrenadeType_Decoy;
+    }
 
     return GrenadeType_Invalid;
 }
@@ -229,6 +247,18 @@ stock WeaponAmmoGrenadeType:WeaponAmmoEntityToGrenadeType(const String:weaponent
         case GrenadeType_Smokegrenade:
         {
             return WEAPONAMMO_SMOKEGRENADE_LIMIT;
+        }
+        case GrenadeType_Incendiary:
+        {
+            return WEAPONAMMO_INCENDIARY_LIMIT;
+        }
+		case GrenadeType_Molotov:
+        {
+            return WEAPONAMMO_MOLOTOV_LIMIT;
+        }
+		case GrenadeType_Decoy:
+        {
+            return WEAPONAMMO_DECOY_LIMIT;
         }
     }
 

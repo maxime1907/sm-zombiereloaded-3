@@ -323,9 +323,26 @@ ZombieSoundsMoan(client)
  */
 ZombieSoundsScream(client)
 {
+    new Float:delayTimer = 0.0;
+
+    // If the game is CSGO, we need to add delay
+    if (g_Game == Game_CSGO)
+        delayTimer = 0.1;
+    
+    // Emit infect sound with delay
+    CreateTimer(delayTimer, ZombieSoundsScreamTimer, client, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+/**
+ * Emits the scream sound (on infection) with delay.
+ *
+ * @param client    Client index.
+ */
+public Action:ZombieSoundsScreamTimer(Handle:timer, any client)
+{
     decl String:sound[PLATFORM_MAX_PATH];
     GetConVarString(g_hCvarsList[CVAR_INFECT_SOUND], sound, sizeof(sound));
-
+    
     // If cvar contains path, then continue.
     if (sound[0])
     {

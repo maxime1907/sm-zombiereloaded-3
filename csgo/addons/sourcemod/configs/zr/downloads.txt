@@ -1,0 +1,61 @@
+// ============================================================================
+//
+//                              ZOMBIE:RELOADED
+//                           Downloads configuration
+//
+// See Download List (3.6) section in the manual for detailed info.
+//
+// ============================================================================
+// * Each uncommented line will be used as a file path for clients to download.
+// ----------------------------------------------------------------------------
+// Defaults:
+// ----------------------------------------------------------------------------
+
+// zombie models
+models/player/mapeadores/kaem/zh/zh1fix5.mdl
+models/player/mapeadores/kaem/zh/zh1fix5.dx90.vtx
+models/player/mapeadores/kaem/zh/zh1fix5.vvd
+models/player/mapeadores/kaem/zh/zh1fix5.phy
+
+models/player/mapeadores/kaem/zh/zh2fix3.mdl
+models/player/mapeadores/kaem/zh/zh2fix3.dx90.vtx
+models/player/mapeadores/kaem/zh/zh2fix3.vvd
+models/player/mapeadores/kaem/zh/zh2fix3.phy
+
+models/player/mapeadores/morell/zh/zh3fix3.mdl
+models/player/mapeadores/morell/zh/zh3fix3.vvd
+models/player/mapeadores/morell/zh/zh3fix3.phy
+models/player/mapeadores/morell/zh/zh3fix3.dx90.vtx
+ 
+materials/models/player/mapeadores/kaem/zh/charple1_normal.vtf
+materials/models/player/mapeadores/kaem/zh/charple1_sheet.vmt
+materials/models/player/mapeadores/kaem/zh/charple1_sheet.vtf
+materials/models/player/mapeadores/kaem/zh/charple2_normal.vtf
+materials/models/player/mapeadores/kaem/zh/charple2_sheet.vmt
+materials/models/player/mapeadores/kaem/zh/charple2_sheet.vtf
+materials/models/player/mapeadores/kaem/zh/charple3_normal.vtf
+materials/models/player/mapeadores/kaem/zh/charple3_sheet.vmt
+materials/models/player/mapeadores/kaem/zh/charple3_sheet.vtf
+materials/models/player/mapeadores/kaem/zh/charple4_normal.vtf
+materials/models/player/mapeadores/kaem/zh/charple4_sheet.vmt
+materials/models/player/mapeadores/kaem/zh/charple4_sheet.vtf
+
+materials/models/player/mapeadores/kaem/zh/corpse1.vtf
+materials/models/player/mapeadores/kaem/zh/corpse1.vmt
+
+materials/models/player/mapeadores/morell/zhfix/zombie_classic_sheet.vmt
+materials/models/player/mapeadores/morell/zhfix/Zombie_Classic_sheet.vtf
+materials/models/player/mapeadores/morell/zhfix/Zombie_Classic_sheet_normal.vtf
+
+// team win overlays
+materials/overlays/zr/cruisecar/c1024_zombies.vmt
+materials/overlays/zr/cruisecar/c1024_zombies.vtf
+materials/overlays/zr/cruisecar/c1024_humans.vmt
+materials/overlays/zr/cruisecar/c1024_zombies.vtf
+
+// zvision (NOT TESTED IN CSGO)
+materials/overlays/zr/zvision.vtf
+materials/overlays/zr/zvision.vmt
+
+// ambient sound
+sound/music/ambient/zr/zr_ambient_fix.mp3

@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/player/mapeadores/kaem/zh/Charple2_sheet"
+	"$bumpmap" "models/player/mapeadores/kaem/zh/Charple2_normal"
+	"$envmap" "env_cubemap"	
+	"$normalmapalphaenvmapmask" 1
+	"$envmapcontrast" 1
+}

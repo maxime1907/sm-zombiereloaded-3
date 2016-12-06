@@ -93,6 +93,12 @@ enum InfectMotherStatus
 new InfectMotherStatus:g_InfectMotherStatus[MAXPLAYERS + 1];
 
 /**
+ * Saved the last zombie infect time and location.
+ */
+new Float:g_LastScreamTime = 0.0;
+new Float:g_LastScreamLoc[3];
+
+/**
  * Available mother zombie infection modes.
  */
 enum InfectMode
@@ -724,6 +730,9 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
 {
     // Forward pre-event to modules.
     new Action:result = APIOnClientInfect(client, attacker, motherinfect, respawnoverride, respawn);
+    
+    // Check if zombie is infected or respawned
+    new bool:checkDistance = false;
 
     // Check if infection should be blocked.
     if (result == Plugin_Handled)
@@ -749,9 +758,13 @@ InfectHumanToZombie(client, attacker = -1, bool:motherinfect = false, bool:respa
         // Consecutive infection protection is disabled. No immunity.
         g_InfectMotherStatus[client] = MotherStatus_None;
     }
-
+        
+    // Mark zombie infection method
+    if (attacker == -1 && !motherinfect)
+        checkDistance = true;
+    
     // Apply effects.
-    InfectFireEffects(client);
+    InfectFireEffects(client, checkDistance);
 
     // Stop coundown, if running.
     InfectStopCountdown();
@@ -922,7 +935,7 @@ InfectUpdateScore(attacker, victim)
  *
  * @param client    The client index.
  */
-InfectFireEffects(client)
+InfectFireEffects(client, bool:checkDistance = false)
 {
     // Initialize vector variables.
     new Float:clientloc[3];
@@ -963,9 +976,25 @@ InfectFireEffects(client)
         VEffectsCreateExplosion(clientloc, flags);
     }
 
-    // Emit scream sound if enabled.
-    ZombieSoundsScream(client);
-
+    // If zombie is respawned
+    if (checkDistance)
+    {
+        float distanceBetweenZombies = distanceBetweenZombies = GetVectorDistance(clientloc, g_LastScreamLoc, true);
+        
+        if ((GetGameTime() - g_LastScreamTime > 0.5) && (distanceBetweenZombies > 256*256))
+        {
+            g_LastScreamTime = GetGameTime();
+            GetClientAbsOrigin(client, g_LastScreamLoc);
+            // Emit scream sound if enabled.
+            ZombieSoundsScream(client);
+        }
+    }
+    else
+    {
+        // Emit scream sound if enabled.
+        ZombieSoundsScream(client);
+    }
+    
     // If energy splash effect is enabled, then continue.
     new bool:esplash = GetConVarBool(g_hCvarsList[CVAR_INFECT_ESPLASH]);
     if (esplash)

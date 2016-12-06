@@ -65,6 +65,8 @@ new bool:g_bZMarketWeaponsBought[MAXPLAYERS + 1];
  */
 new Handle:g_hZMarketLoadoutCookie[WEAPONS_SLOTS_MAX + 1];
 
+new bool:g_bZMarketCommandInitialized = false;
+
 /**
  * Create commands specific to ZMarket.
  */
@@ -72,6 +74,7 @@ ZMarketOnCommandsCreate()
 {
     // Register ZMarket command.
     RegConsoleCmd(SAYHOOKS_KEYWORD_ZMARKET, ZMarketCommand, "Opens custom buymenu.");
+    g_bZMarketCommandInitialized = false;
 }
 
 ZMarketOnCookiesCreate()
@@ -98,6 +101,52 @@ ZMarketOnCookiesCreate()
             g_hZMarketLoadoutCookie[x] = RegClientCookie(rebuycookiename, rebuycookiedesc, CookieAccess_Protected);
         }
     }
+}
+
+ZMarketLoad()
+{
+    // Do not register commands multiple times
+    if(g_bZMarketCommandInitialized)
+        return;
+
+    decl String:zmarketcommand[CONFIG_MAX_LENGTH];
+    decl String:weaponname[WEAPONS_MAX_LENGTH];
+
+    new size = GetArraySize(arrayWeapons);
+    for (new weaponindex = 0; weaponindex < size; weaponindex++)
+    {
+        WeaponsGetZMarketCommand(weaponindex, zmarketcommand, sizeof(zmarketcommand));
+        if(zmarketcommand[0])
+        {
+            WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
+            RegConsoleCmd(zmarketcommand, ZMarketBuyCommand, weaponname);
+        }
+    }
+
+    g_bZMarketCommandInitialized = true;
+}
+
+public Action:ZMarketBuyCommand(client, argc)
+{
+    decl String:command[CONFIG_MAX_LENGTH];
+    decl String:zmarketcommand[CONFIG_MAX_LENGTH];
+    decl String:weaponname[WEAPONS_MAX_LENGTH];
+
+    GetCmdArg(0, command, sizeof(command));
+
+    new size = GetArraySize(arrayWeapons);
+    for (new weaponindex = 0; weaponindex < size; weaponindex++)
+    {
+        WeaponsGetZMarketCommand(weaponindex, zmarketcommand, sizeof(zmarketcommand));
+        if(StrEqual(command, zmarketcommand))
+        {
+            WeaponsGetName(weaponindex, weaponname, sizeof(weaponname));
+            ZMarketEquip(client, weaponname);
+            return Plugin_Handled;
+        }
+    }
+
+    return Plugin_Handled;
 }
 
 /**

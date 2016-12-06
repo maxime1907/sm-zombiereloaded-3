@@ -218,7 +218,7 @@ WeaponsLoad()
 
     // Forward event to sub-modules
     RestrictLoad();
-    //ZMarketLoad();
+    ZMarketLoad();
 }
 
 /**

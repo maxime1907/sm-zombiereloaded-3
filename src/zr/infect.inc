@@ -979,12 +979,14 @@ InfectFireEffects(client, bool:checkDistance = false)
     // If zombie is respawned
     if (checkDistance)
     {
-        float distanceBetweenZombies = distanceBetweenZombies = GetVectorDistance(clientloc, g_LastScreamLoc, true);
+        float distanceBetweenZombies = GetVectorDistance(clientloc, g_LastScreamLoc, true);
         
         if ((GetGameTime() - g_LastScreamTime > 0.5) && (distanceBetweenZombies > 256*256))
         {
             g_LastScreamTime = GetGameTime();
-            GetClientAbsOrigin(client, g_LastScreamLoc);
+            g_LastScreamLoc[0] = clientloc[0];
+            g_LastScreamLoc[1] = clientloc[1];
+            g_LastScreamLoc[2] = clientloc[2];
             // Emit scream sound if enabled.
             ZombieSoundsScream(client);
         }

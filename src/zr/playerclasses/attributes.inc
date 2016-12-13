@@ -804,7 +804,7 @@ stock ClassGetImmunityCooldown(index, cachetype = ZR_CLASS_CACHE_PLAYER)
 }
 
 /**
- * Gets the no fall damage setting from the specified class.
+ * Gets the fall damage scale setting from the specified class.
  *
  * @param index     Index of the class in a class cache or a client index,
  *                  depending on the cache type specified.
@@ -813,27 +813,27 @@ stock ClassGetImmunityCooldown(index, cachetype = ZR_CLASS_CACHE_PLAYER)
  *                  ZR_CLASS_CACHE_MODIFIED - Changed/newest class data.
  *                  ZR_CLASS_CACHE_PLAYER (default) - Player cache. If this one
  *                  is used, index will be used as a client index.
- * @return  The no fall damage setting from the specified class. False on
+ * @return  The fall damage scale setting from the specified class. 1.0 on
  * error.
  */
-stock bool:ClassGetNoFallDamage(index, cachetype = ZR_CLASS_CACHE_PLAYER)
+stock Float:ClassGetFallDamageScale(index, cachetype = ZR_CLASS_CACHE_PLAYER)
 {
     switch (cachetype)
     {
         case ZR_CLASS_CACHE_ORIGINAL:
         {
-            return ClassData[index][Class_NoFallDamage];
+            return ClassData[index][Class_FallDamageScale];
         }
         case ZR_CLASS_CACHE_MODIFIED:
         {
-            return ClassDataCache[index][Class_NoFallDamage];
+            return ClassDataCache[index][Class_FallDamageScale];
         }
         case ZR_CLASS_CACHE_PLAYER:
         {
-            return ClassPlayerCache[index][Class_NoFallDamage];
+            return ClassPlayerCache[index][Class_FallDamageScale];
         }
     }
-    return false;
+    return 1.0;
 }
 
 /**
@@ -1256,9 +1256,9 @@ stock ClassAttributeNameToFlag(const String:attributename[])
     {
         return ZR_CLASS_IMMUNITY_COOLDOWN;
     }
-    else if (StrEqual(attributename, "no_fall_damage", false))
+    else if (StrEqual(attributename, "fall_dmg_scale", false))
     {
-        return ZR_CLASS_NO_FALL_DAMAGE;
+        return ZR_CLASS_FALL_DMG_SCALE;
     }
     else if (StrEqual(attributename, "health", false))
     {
@@ -1367,7 +1367,7 @@ stock ClassDataTypes:ClassGetAttributeType(attributeflag)
         case ZR_CLASS_ENABLED,
               ZR_CLASS_NVGS,
               ZR_CLASS_HAS_NAPALM,
-              ZR_CLASS_NO_FALL_DAMAGE:
+              ZR_CLASS_FALL_DMG_SCALE:
         {
             return ClassDataType_Boolean;
         }

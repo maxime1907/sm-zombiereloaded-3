@@ -45,7 +45,7 @@ new VolEmptyAttributes[ClassEditableAttributes] = {
     Immunity_Invalid,               /** ImmunityMode */
     -1,                             /** ImmunityAmount */
     -1,                             /** ImmunityCooldown */
-    -1,                             /** NoFallDamage */
+    -1,                             /** FallDamageScale */
 
     -1.0,                           /** RegenInterval */
     -1,                             /** RegenAmount */
@@ -261,9 +261,9 @@ VolClassEditSetAttribute(dataIndex, const String:attribName[], const String:attr
             return true;
         }
     }
-    else if (StrEqual(attribName, "no_fall_damage", false))
+    else if (StrEqual(attribName, "fall_dmg_scale", false))
     {
-        if (VolClassEditSetNoFallDamage(dataIndex, attribValue))
+        if (VolClassEditSetFallDamageScale(dataIndex, attribValue))
         {
             return true;
         }
@@ -415,8 +415,8 @@ VolClassEditDumpData(dataIndex, String:buffer[], maxlen)
             Format(linebuffer, sizeof(linebuffer), CLASSEDIT_DUMP_FORMAT, "Immunity cooldown:", valuebuffer);
             cellswritten += StrCat(buffer, maxlen, linebuffer);
 
-            VolClassEditIntToString(dataIndex, ClassEdit_NoFallDamage, valuebuffer, sizeof(valuebuffer));
-            Format(linebuffer, sizeof(linebuffer), CLASSEDIT_DUMP_FORMAT, "No fall damage:", valuebuffer);
+            VolClassEditIntToString(dataIndex, ClassEdit_FallDamageScale, valuebuffer, sizeof(valuebuffer));
+            Format(linebuffer, sizeof(linebuffer), CLASSEDIT_DUMP_FORMAT, "Fall damage scale:", valuebuffer);
             cellswritten += StrCat(buffer, maxlen, linebuffer);
 
             VolClassEditFloatToString(dataIndex, ClassEdit_RegenInterval, valuebuffer, sizeof(valuebuffer));
@@ -982,7 +982,7 @@ bool:VolClassEditSetImmunityCooldown(dataIndex, const String:value[])
 }
 
 /**
- * Sets the no fall damage attribute.
+ * Sets the fall damage scale attribute.
  *
  * Note: The value is not validated!
  *
@@ -991,14 +991,14 @@ bool:VolClassEditSetImmunityCooldown(dataIndex, const String:value[])
  *                      function).
  * @return              True if set, false if empty.
  */
-bool:VolClassEditSetNoFallDamage(dataIndex, const String:value[])
+bool:VolClassEditSetFallDamageScale(dataIndex, const String:value[])
 {
     if (strlen(value) == 0)
     {
         return false;
     }
 
-    VolClassEditData[dataIndex][VolClassEdit_ClassData][ClassEdit_NoFallDamage] = StringToInt(value);
+    VolClassEditData[dataIndex][VolClassEdit_ClassData][ClassEdit_FallDamageScale] = StringToInt(value);
     return true;
 }
 
@@ -1247,10 +1247,10 @@ VolClassEditUpdateAttributes(client, const attributes[])
         numChanges++;
     }
 
-    // No fall damage.
-    if (attributes[ClassEdit_NoFallDamage] > -1)
+    // Fall damage scale.
+    if (attributes[ClassEdit_FallDamageScale] > -1)
     {
-        ClassPlayerCache[client][Class_NoFallDamage] = bool:attributes[ClassEdit_NoFallDamage];
+        ClassPlayerCache[client][Class_FallDamageScale] = Float:attributes[ClassEdit_FallDamageScale];
         numChanges++;
     }
 
@@ -1385,10 +1385,10 @@ VolClassEditRestoreAttributes(client, classindex, const attributes[])
         numChanges++;
     }
 
-    // No fall damage.
-    if (attributes[ClassEdit_NoFallDamage] > -1)
+    // Fall damage scale.
+    if (attributes[ClassEdit_FallDamageScale] > -1)
     {
-        ClassPlayerCache[client][Class_NoFallDamage] = ClassGetNoFallDamage(classindex, ZR_CLASS_CACHE_MODIFIED);
+        ClassPlayerCache[client][Class_FallDamageScale] = ClassGetFallDamageScale(classindex, ZR_CLASS_CACHE_MODIFIED);
         numChanges++;
     }
 

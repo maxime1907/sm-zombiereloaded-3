@@ -358,10 +358,11 @@ public Action:DamageOnTakeDamage(client, &attacker, &inflictor, &Float:damage, &
     else if (damagetype & DMG_FALL)
     {
         // If class has "nofalldamage" disabled, then allow damage.
-        new bool:blockfalldamage = ClassGetNoFallDamage(client);
-        if (!blockfalldamage)
+        new Float:falldamagescale = ClassGetFallDamageScale(client);
+        if (falldamagescale != 0.0)
         {
-            return Plugin_Continue;
+            damage *= falldamagescale;
+            return Plugin_Changed;
         }
 
         // Stop damage.

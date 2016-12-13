@@ -48,7 +48,7 @@
 // immunity_cooldown        number      Number of seconds of cooldown for temporary immunity actions, depending on mode.
 //                                      "delay"  - Number of seconds the delay is reduced every time a zombie attack, while a delayed infection is in progress.
 //                                      "shield" - Number of seconds the player has to wait before the shield can be used again.
-// no_fall_damage           on/off      Disables fall damage.
+// fall_dmg_scale           decimal     Scales fall damage. Use 0 for no damage, 1.0 is normal.
 // health                   number      How many health points to give.
 // health_regen_interval    decimal     Sets the regeneration interval. 0 to disable.
 // health_regen_amount      number      How much HP to give per interval.
@@ -98,7 +98,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "3200"
         "health_regen_interval" "0.0"
@@ -144,7 +144,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "2500"
         "health_regen_interval" "0.0"
@@ -190,7 +190,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "3500"
         "health_regen_interval" "0.0"
@@ -236,7 +236,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "5500"
         "health_regen_interval" "0.0"
@@ -282,7 +282,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "3000"
         "health_regen_interval" "0.25"
@@ -328,7 +328,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "3500"
         "health_regen_interval" "0.25"
@@ -380,7 +380,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "no"
+        "fall_dmg_scale"        "1.0"
         
         "health"                "100"
         "health_regen_interval" "0.0"
@@ -426,7 +426,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "200"
         "health_regen_interval" "1.0"
@@ -472,7 +472,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "200"
         "health_regen_interval" "1.0"
@@ -518,7 +518,7 @@
         "immunity_mode"         "none"
         "immunity_amount"       "1"
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "0"
+        "fall_dmg_scale"        "1.0"
         
         "health"                "100"
         "health_regen_interval" "0.0"
@@ -564,7 +564,7 @@
         "immunity_mode"         "infect"        // Invulnerable to infection,
         "immunity_amount"       "25"            // until HP go below 25.
         "immunity_cooldown"     "60"
-        "no_fall_damage"        "yes"
+        "fall_dmg_scale"        "0"
         
         "health"                "100"
         "health_regen_interval" "0.0"

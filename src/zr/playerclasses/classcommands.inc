@@ -664,9 +664,9 @@ stock bool:ClassModifyBoolean(classindex, attributeflag, bool:value)
             ClassDataCache[classindex][Class_Nvgs] = bool:value;
             return true;
         }
-        case ZR_CLASS_NO_FALL_DAMAGE:
+        case ZR_CLASS_FALL_DMG_SCALE:
         {
-            ClassDataCache[classindex][Class_NoFallDamage] = bool:value;
+            ClassDataCache[classindex][Class_FallDamageScale] = Float:value;
             return true;
         }
         case ZR_CLASS_HAS_NAPALM:

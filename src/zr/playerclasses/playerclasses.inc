@@ -120,7 +120,7 @@
 #define ZR_CLASS_DEFAULT_IMMUNITY_MODE          "none"
 #define ZR_CLASS_DEFAULT_IMMUNITY_AMOUNT        1
 #define ZR_CLASS_DEFAULT_IMMUNITY_COOLDOWN      60
-#define ZR_CLASS_DEFAULT_NO_FALL_DAMAGE         "yes"
+#define ZR_CLASS_DEFAULT_FALL_DMG_SCALE         1.0
 #define ZR_CLASS_DEFAULT_HEALTH                 6000
 #define ZR_CLASS_DEFAULT_HEALTH_REGEN_INTERVAL  0.0
 #define ZR_CLASS_DEFAULT_HEALTH_REGEN_AMOUNT    2
@@ -207,7 +207,7 @@
 #define ZR_CLASS_IMMUNITY_MODE          (1<<18)
 #define ZR_CLASS_IMMUNITY_AMOUNT        (1<<19)
 #define ZR_CLASS_IMMUNITY_COOLDOWN      (1<<20)
-#define ZR_CLASS_NO_FALL_DAMAGE         (1<<21)
+#define ZR_CLASS_FALL_DMG_SCALE         (1<<21)
 #define ZR_CLASS_HEALTH                 (1<<22)
 #define ZR_CLASS_HEALTH_REGEN_INTERVAL  (1<<23)
 #define ZR_CLASS_HEALTH_REGEN_AMOUNT    (1<<24)
@@ -273,7 +273,7 @@ enum ClassAttributes
     ImmunityMode:Class_ImmunityMode,
     Class_ImmunityAmount,
     Class_ImmunityCooldown,
-    bool:Class_NoFallDamage,
+    Float:Class_FallDamageScale,
 
     Class_Health,
     Float:Class_HealthRegenInterval,
@@ -319,7 +319,7 @@ enum ClassEditableAttributes
     ClassEdit_ImmunityAmount,
     ClassEdit_ImmunityCooldown,
 
-    ClassEdit_NoFallDamage,
+    ClassEdit_FallDamageScale,
     Float:ClassEdit_RegenInterval,
     ClassEdit_RegenAmount,
     ClassEdit_InfectGain,
@@ -630,7 +630,7 @@ ClassLoad()
         ClassData[ClassCount][Class_ImmunityMode] = ImmunityStringToMode(immunity_mode);
         ClassData[ClassCount][Class_ImmunityAmount] = KvGetNum(kvClassData, "immunity_amount", ZR_CLASS_DEFAULT_IMMUNITY_AMOUNT);
         ClassData[ClassCount][Class_ImmunityCooldown] = KvGetNum(kvClassData, "immunity_cooldown", ZR_CLASS_DEFAULT_IMMUNITY_COOLDOWN);
-        ClassData[ClassCount][Class_NoFallDamage] = ConfigKvGetStringBool(kvClassData, "no_fall_damage", ZR_CLASS_DEFAULT_NO_FALL_DAMAGE);
+        ClassData[ClassCount][Class_FallDamageScale] = KvGetFloat(kvClassData, "fall_dmg_scale", ZR_CLASS_DEFAULT_FALL_DMG_SCALE);
 
         ClassData[ClassCount][Class_Health] = KvGetNum(kvClassData, "health", ZR_CLASS_DEFAULT_HEALTH);
         ClassData[ClassCount][Class_HealthRegenInterval] = KvGetFloat(kvClassData, "health_regen_interval", ZR_CLASS_DEFAULT_HEALTH_REGEN_INTERVAL);
@@ -777,7 +777,7 @@ bool:ClassReloadDataCache()
         ClassDataCache[classindex][Class_ImmunityMode] = ClassData[classindex][Class_ImmunityMode];
         ClassDataCache[classindex][Class_ImmunityAmount] = ClassData[classindex][Class_ImmunityAmount];
         ClassDataCache[classindex][Class_ImmunityCooldown] = ClassData[classindex][Class_ImmunityCooldown];
-        ClassDataCache[classindex][Class_NoFallDamage] = ClassData[classindex][Class_NoFallDamage];
+        ClassDataCache[classindex][Class_FallDamageScale] = ClassData[classindex][Class_FallDamageScale];
         ClassDataCache[classindex][Class_Health] = ClassData[classindex][Class_Health];
         ClassDataCache[classindex][Class_HealthRegenInterval] = ClassData[classindex][Class_HealthRegenInterval];
         ClassDataCache[classindex][Class_HealthRegenAmount] = ClassData[classindex][Class_HealthRegenAmount];
@@ -845,7 +845,7 @@ bool:ClassReloadPlayerCache(client, classindex, cachetype = ZR_CLASS_CACHE_MODIF
             ClassPlayerCache[client][Class_ImmunityMode] = ClassData[classindex][Class_ImmunityMode];
             ClassPlayerCache[client][Class_ImmunityAmount] = ClassData[classindex][Class_ImmunityAmount];
             ClassPlayerCache[client][Class_ImmunityCooldown] = ClassData[classindex][Class_ImmunityCooldown];
-            ClassPlayerCache[client][Class_NoFallDamage] = ClassData[classindex][Class_NoFallDamage];
+            ClassPlayerCache[client][Class_FallDamageScale] = ClassData[classindex][Class_FallDamageScale];
             ClassPlayerCache[client][Class_Health] = ClassData[classindex][Class_Health];
             ClassPlayerCache[client][Class_HealthRegenInterval] = ClassData[classindex][Class_HealthRegenInterval];
             ClassPlayerCache[client][Class_HealthRegenAmount] = ClassData[classindex][Class_HealthRegenAmount];
@@ -888,7 +888,7 @@ bool:ClassReloadPlayerCache(client, classindex, cachetype = ZR_CLASS_CACHE_MODIF
             ClassPlayerCache[client][Class_ImmunityMode] = ClassDataCache[classindex][Class_ImmunityMode];
             ClassPlayerCache[client][Class_ImmunityAmount] = ClassDataCache[classindex][Class_ImmunityAmount];
             ClassPlayerCache[client][Class_ImmunityCooldown] = ClassDataCache[classindex][Class_ImmunityCooldown];
-            ClassPlayerCache[client][Class_NoFallDamage] = ClassDataCache[classindex][Class_NoFallDamage];
+            ClassPlayerCache[client][Class_FallDamageScale] = ClassDataCache[classindex][Class_FallDamageScale];
             ClassPlayerCache[client][Class_Health] = ClassDataCache[classindex][Class_Health];
             ClassPlayerCache[client][Class_HealthRegenInterval] = ClassDataCache[classindex][Class_HealthRegenInterval];
             ClassPlayerCache[client][Class_HealthRegenAmount] = ClassDataCache[classindex][Class_HealthRegenAmount];
@@ -1417,7 +1417,7 @@ ClassDumpData(index, cachetype, String:buffer[], maxlen)
     Format(attribute, sizeof(attribute), "immunity_cooldown:     \"%d\"\n", ClassGetImmunityCooldown(index, cachetype));
     cellcount += StrCat(buffer, maxlen, attribute);
 
-    Format(attribute, sizeof(attribute), "no_fall_damage:        \"%d\"\n", ClassGetNoFallDamage(index, cachetype));
+    Format(attribute, sizeof(attribute), "fall_dmg_scale:        \"%d\"\n", ClassGetFallDamageScale(index, cachetype));
     cellcount += StrCat(buffer, maxlen, attribute);
 
     Format(attribute, sizeof(attribute), "health:                \"%d\"\n", ClassGetHealth(index, cachetype));

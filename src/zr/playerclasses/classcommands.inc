@@ -664,11 +664,6 @@ stock bool:ClassModifyBoolean(classindex, attributeflag, bool:value)
             ClassDataCache[classindex][Class_Nvgs] = bool:value;
             return true;
         }
-        case ZR_CLASS_FALL_DMG_SCALE:
-        {
-            ClassDataCache[classindex][Class_FallDamageScale] = Float:value;
-            return true;
-        }
         case ZR_CLASS_HAS_NAPALM:
         {
             ClassDataCache[classindex][Class_HasNapalm] = bool:value;
@@ -881,6 +876,15 @@ stock ClassModifyFloat(classindex, attributeflag, Float:value, bool:ismultiplier
             }
             ClassDataCache[classindex][Class_JumpDistance] = value;
             return true;
+        }
+        case ZR_CLASS_FALL_DMG_SCALE:
+        {
+			if (ismultiplier)
+			{
+				value = ClassData[classindex][Class_FallDamageScale] * value;
+			}
+			ClassDataCache[classindex][Class_FallDamageScale] = value;
+			return true;
         }
     }
 

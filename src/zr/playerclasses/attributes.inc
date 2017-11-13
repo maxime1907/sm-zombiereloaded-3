@@ -1366,8 +1366,7 @@ stock ClassDataTypes:ClassGetAttributeType(attributeflag)
         // Boolean.
         case ZR_CLASS_ENABLED,
               ZR_CLASS_NVGS,
-              ZR_CLASS_HAS_NAPALM,
-              ZR_CLASS_FALL_DMG_SCALE:
+              ZR_CLASS_HAS_NAPALM:
         {
             return ClassDataType_Boolean;
         }
@@ -1395,7 +1394,8 @@ stock ClassDataTypes:ClassGetAttributeType(attributeflag)
               ZR_CLASS_SPEED,
               ZR_CLASS_KNOCKBACK,
               ZR_CLASS_JUMP_HEIGHT,
-              ZR_CLASS_JUMP_DISTANCE:
+              ZR_CLASS_JUMP_DISTANCE,
+              ZR_CLASS_FALL_DMG_SCALE:
         {
             return ClassDataType_Float;
         }

@@ -203,6 +203,10 @@ public OnMapStart()
     SEffectsOnMapStart();
     ZSpawnOnMapStart();
     VolInit();
+	
+	// Fixed crash in the last CS:GO update
+	ModelsLoad();
+	DownloadsLoad();
 }
 
 /**
@@ -233,8 +237,6 @@ public OnAutoConfigsBuffered()
 public OnConfigsExecuted()
 {
     // Forward event to modules. (OnConfigsExecuted)
-    ModelsLoad();
-    DownloadsLoad();
     WeaponsLoad();
     HitgroupsLoad();
     InfectLoad();

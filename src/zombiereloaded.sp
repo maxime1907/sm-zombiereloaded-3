@@ -204,9 +204,9 @@ public OnMapStart()
     ZSpawnOnMapStart();
     VolInit();
 	
-	// Fixed crash in the last CS:GO update
-	ModelsLoad();
-	DownloadsLoad();
+    // Fixed crash in the last CS:GO update
+    ModelsLoad();
+    DownloadsLoad();
 }
 
 /**

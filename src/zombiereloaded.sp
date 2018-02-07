@@ -207,6 +207,9 @@ public OnMapStart()
     // Fixed crash in the last CS:GO update
     ModelsLoad();
     DownloadsLoad();
+    InfectLoad();
+    VEffectsLoad();
+    SEffectsLoad();
 }
 
 /**
@@ -239,10 +242,7 @@ public OnConfigsExecuted()
     // Forward event to modules. (OnConfigsExecuted)
     WeaponsLoad();
     HitgroupsLoad();
-    InfectLoad();
     DamageLoad();
-    VEffectsLoad();
-    SEffectsLoad();
     ClassOnConfigsExecuted();
     ClassLoad();
     VolLoad();

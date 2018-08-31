@@ -638,9 +638,14 @@
 		"en"		"You may only carry {1} grenade(s) of this type."
 	}
 
-	"Weapons zmarket not enough money"
+	"Weapons zmarket auto-rebuy toggle on"
 	{
-		"en"		"You have insufficient funds."
+		"en"		"Auto-rebuy has been enabled, your loadout will be automatically purchased for you each time you spawn."
+	}
+
+	"Weapons zmarket auto-rebuy toggle off"
+	{
+		"en"		"Auto-rebuy has been disabled."
 	}
 
 	"Weapons zmarket updated loadout"
@@ -728,14 +733,20 @@
 		"en"		"Save Current Setup"
 	}
 
-	"Weapons menu zmarket main edit loadout"
+	"Weapons menu zmarket main view loadout"
 	{
-		"en"		"Edit Saved Setup"
+		"en"		"View Saved Setup"
 	}
 
 	"Weapons menu zmarket main rebuy"
 	{
 		"en"		"Buy Saved Setup"
+	}
+
+	"Weapons menu zmarket main auto-rebuy"
+	{
+		"#format"	"{1:s}"
+		"en"		"Auto-Rebuy: {1}"
 	}
 
 	"Weapons menu zmarket main weapons list"
@@ -745,7 +756,7 @@
 
 	"Weapons menu zmarket loadout title"
 	{
-		"en"		"ZMarket\nMy Current Setup:\nSelect weapon slot to modify.\nNote: Rebuy refers to these weapons.\nYou will spawn with these weapons."
+		"en"		"ZMarket\nMy Current Setup:\nSelect weapon slot to clear.\nNote: Rebuy refers to these weapons."
 	}
 
 	"Weapons menu zmarket loadout primary"
@@ -760,15 +771,45 @@
 		"en"		"Secondary: {1}"
 	}
 
-	"Weapons menu zmarket loadout default"
+	"Weapons menu zmarket loadout melee"
 	{
 		"#format"	"{1:s}"
-		"en"		"Default ({1})"
+		"en"		"Melee: {1}"
 	}
 
-	"Weapons menu zmarket loadout weapons title"
+	"Weapons menu zmarket loadout projectile"
 	{
-		"en"		"ZMarket\nSelect Weapon Loadout:"
+		"#format"	"{1:s}"
+		"en"		"Projectile: {1}"
+	}
+
+	"Weapons menu zmarket loadout explosive"
+	{
+		"#format"	"{1:s}"
+		"en"		"Explosive: {1}"
+	}
+
+	"Weapons menu zmarket loadout firenade"
+	{
+		"#format"	"{1:s}"
+		"en"		"Fire Grenade: {1}"
+	}
+
+	"Weapons menu zmarket loadout decoy"
+	{
+		"#format"	"{1:s}"
+		"en"		"Decoy Grenade: {1}"
+	}
+
+	"Weapons menu zmarket loadout nvgs"
+	{
+		"#format"	"{1:s}"
+		"en"		"NVGs: {1}"
+	}
+
+	"Weapons menu zmarket loadout empty"
+	{
+		"en"		"(None)"
 	}
 
 	"Weapons menu zmarket types title"

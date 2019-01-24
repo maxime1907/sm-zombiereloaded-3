@@ -6,7 +6,7 @@
 
 	"General round objective"
 	{
-		"es"		"El juego es @greenHumanos vs. Zombis@default, El objetivo de los zombis es infectar a todos los humanos. Traducido por @greenFranc1sco @defaultSteam: @greenfranug"
+		"es"		"El juego es @greenHumanos vs. Zombies@default, El objetivo de los zombies es infectar a todos los humanos."
 	}
 
 	"General zmenu reminder"
@@ -68,19 +68,14 @@
 
 	"Must be zombie"
 	{
-		"es"		"Esta funcion requiere que tu seas zombi."
+		"es"		"Esta funcion requiere que tu seas zombie."
 	}
 
 	"Must be human"
 	{
 		"es"		"Esta funcion requiere que tu seas humano."
 	}
-
-	"Must be in buyzone"
-	{
-		"es"		"This feature requires that you are in a buyzone." // TODO: Translate
-	}
-
+	
 	"Increase by"
 	{
 		"es"		"Aumentado en {1}"
@@ -98,7 +93,7 @@
 
 	"Zombie"
 	{
-		"es"		"Zombi"
+		"es"		"Zombie"
 	}
 
 	"Human"
@@ -238,7 +233,7 @@
 
 	"Classes menu select zombie"
 	{
-		"es"		"Seleccione la clase de Zombi"
+		"es"		"Seleccione la clase de Zombie"
 	}
 
 	"Classes menu select human"
@@ -263,7 +258,7 @@
 
 	"Classes Menu Zombies"
 	{
-		"es"		"Zombis"
+		"es"		"Zombies"
 	}
 
 	"Classes Menu Humans"
@@ -339,17 +334,17 @@
 
 	"Immunity Shield Not Available"
 	{
-		"en"		"You don't have a shield."
+		"es"		"No tienes escudo."
 	}
 
 	"Immunity Shield Cooldown"
 	{
-		"en"		"{1} seconds until shield is available."
+		"es"		"{1} segundos para que el escudo este disponible."
 	}
 
 	"Immunity Shield Time Left"
 	{
-		"en"		"Shield time left: {1}"
+		"es"		"Tiempo restante del escudo: {1}"
 	}
 
 	// ===========================
@@ -374,31 +369,31 @@
 
 	"Infect human"
 	{
-		"es"		"Los dioses misericordiosos (conocidos como admins) han resucitado tu alma, aprovecha esta nueva oportunidad!"
+		"es"		"Los admins te han resucitado, aprovecha esta nueva oportunidad!"
 	}
 
 	"Infect disconnect"
 	{
-		"es"		"El ultimo zombi a dejado el juego, y te ha pasado la infeccion a ti. (luego se lo agradeces xD)"
+		"es"		"El ultimo zombie a dejado el juego, y te ha pasado la infeccion a ti."
 	}
-
-	"Mother zombie infect cycle reset"
-	{
-		"es"		"The mother zombie infection cycle has been reset." // TODO: Translate
+	
+	"Mother zombie infect cycle reset"			
+	{			
+		"es"         "El ciclo de la infeccion del zombie madre ha sido reseteado."			
 	}
 
 	// Center Text
 
 	"Infect countdown"
 	{
-		"es"		"First infection in {1} seconds."
+		"es"		"El primer infectado aparecera en {1} segundos."
 	}
 
 	// Menu
 
 	"Infect menu clients title"
 	{
-		"es"		"Gestion de Zombis\nActivar infeccion:\n[] = Infecctado"
+		"es"		"Gestion de Zombies\nActivar infeccion:\n[] = Infecctado"
 	}
 
 	// Commands
@@ -417,36 +412,31 @@
 	{
 		"es"		"El jugador @green{1} @defaultha sido infectado con exito."
 	}
-
-	"Infect command infect successful public"
+	
+	"Infect command infect mother successful public"
 	{
-		"es"		"@lgreen{1}@default has infected @green{2}@default." // TODO: Translate
+		"es"		"@lgreen{1}@default ha infectado a @green{2}@default para que sea el zombie madre."
 	}
 
 	"Infect command infect mother successful"
 	{
-		"es"		"El jugador @green{1} @defaultha sido infectado con exito como el zombi madre."
-	}
-
-	"Infect command infect mother successful public"
-	{
-		"es"		"@lgreen{1}@default has infected @green{2}@default as the mother zombie." // TODO: Translate
+		"es"		"El jugador @green{1} @defaultha sido infectado con exito como el zombie madre."
 	}
 
 	"Infect command infect unsuccessful"
 	{
-		"es"		"El jugador @green{1} @defaultya es un zombi."
+		"es"		"El jugador @green{1} @defaultya es un zombie."
 	}
 
 	"Infect command human successful"
 	{
 		"es"		"El jugador @green{1} @defaultha vuelto a ser humano con exito."
 	}
-
-	"Infect command human successful public"
-	{
-		"es"		"@lgreen{1}@default has brought back @green{2}@default as a human." // TODO: Translate
-	}
+	
+	"Infect command human successful public"	
+    {	
+        "es"        "@lgreen{1}@default ha devuelto a la vida como humano a @green{2}@default."			
+    }
 
 	"Infect command human unsuccessful"
 	{
@@ -459,7 +449,7 @@
 
 	"Damage suicide intercept"
 	{
-		"es"		"Intento de suicidio bloqueado (se valiente y no te suicides)."
+		"es"		"Intento de suicidio bloqueado."
 	}
 
 	// ===========================
@@ -470,7 +460,7 @@
 
 	"Menu main title"
 	{
-		"es"		"Comandos ZR (Traducidos por Franc1sco Steam: franug):\nPrefijo de comando con \"{1}\" o \"{2}\" (calma) al escribir en el chat."
+		"es"		"Comandos ZR:\nPrefijo de comando con \"{1}\" o \"{2}\" al escribir en el chat."
 	}
 
 	"Menu main zadmin"
@@ -500,7 +490,7 @@
 
 	"Menu main zhp"
 	{
-		"es"		"ZHP - Muestra tu Salud real como zombi"
+		"es"		"ZHP - Muestra tu Salud real como zombie"
 	}
 
 	"Menu main zmarket"
@@ -516,7 +506,7 @@
 
 	"Zombie cant use weapon"
 	{
-		"es"		"Los zombis no pueden usar armas!"
+		"es"		"Los zombies no pueden usar armas!"
 	}
 
 	// Restrict
@@ -568,7 +558,7 @@
 
 	"Weapon invalid"
 	{
-		"es"		"El arma @green\"{1}\" @defaultes un nombre de (tipo) arma invalido."
+		"es"		"El arma @green\"{1}\" @defaultes un nombre de arma invalido."
 	}
 
 	"Weapon is restricted"
@@ -598,9 +588,14 @@
 		"es"		"solo se puede llevar {1} granada(s) de este tipo."
 	}
 
-	"Weapons zmarket not enough money"
+	"Weapons zmarket auto-rebuy toggle on"
 	{
-		"es"		"You have insufficient funds." // TODO: Translate
+		"es"		"Auto-recompra ha sido activado, su preseleccion se obtienen automaticamente cada vez que aparezcas."
+	}
+
+	"Weapons zmarket auto-rebuy toggle off"
+	{
+		"es"		"Auto-recompra ha sido desactivada."
 	}
 
 	"Weapons zmarket updated loadout"
@@ -684,14 +679,19 @@
 		"es"		"Guardar configuracion actual"
 	}
 
-	"Weapons menu zmarket main edit loadout"
+	"Weapons menu zmarket main view loadout"
 	{
-		"es"		"Edit Saved Setup" // TODO: Translate
+		"es"		"Ver configuracion actual"
 	}
 
 	"Weapons menu zmarket main rebuy"
 	{
 		"es"		"Comprar configuracion actual"
+	}
+
+	"Weapons menu zmarket main auto-rebuy"
+	{
+		"es"		"Auto-Recompra: {1}"
 	}
 
 	"Weapons menu zmarket main weapons list"
@@ -702,7 +702,6 @@
 	"Weapons menu zmarket loadout title"
 	{
 		"es"		"ZMarket\nMi configuracion actual:\nSeleccione la ranura de armas para borrar.\nNota: Recompra se refiere a estas armas."
-		//"es"		"ZMarket\nMy Current Setup:\nSelect weapon slot to modify.\nNote: Rebuy refers to these weapons.\nYou will spawn with these weapons." // TODO: Translate
 	}
 
 	"Weapons menu zmarket loadout primary"
@@ -715,15 +714,39 @@
 		"es"		"Secundaria: {1}"
 	}
 
-	"Weapons menu zmarket loadout default"
+	"Weapons menu zmarket loadout melee"
 	{
-		"#format"	"{1:s}"
-		"es"		"Default ({1})" // TODO: Translate
+		"es"		"Melee: {1}"
 	}
 
-	"Weapons menu zmarket loadout weapons title"
+	"Weapons menu zmarket loadout projectile"
 	{
-		"es"		"ZMarket\nSelect Weapon Loadout:" // TODO: Translate
+		"es"		"Projectil: {1}"
+	}
+
+	"Weapons menu zmarket loadout explosive"
+	{
+		"es"		"Explosivo: {1}"
+	}
+	
+	"Weapons menu zmarket loadout firenade"			
+    {	
+		"es"       	"Granada Incendiaria: {1}"			
+	}			
+
+	"Weapons menu zmarket loadout decoy"			
+	{
+		"es"       	"Granada Decoy: {1}"			
+    }
+
+	"Weapons menu zmarket loadout nvgs"
+	{
+		"es"		"Vision Nocturna: {1}"
+	}
+
+	"Weapons menu zmarket loadout empty"
+	{
+		"es"		"(Ninguno)"
 	}
 
 	"Weapons menu zmarket types title"
@@ -806,7 +829,7 @@
 
 	"Hitgroups command headshots only successful"
 	{
-		"es"		"Los zombis ahora solo pueden ser dañados por disparos a la cabeza."
+		"es"		"Los zombies ahora solo pueden ser dañados por disparos a la cabeza."
 	}
 
 	// ===========================
@@ -835,7 +858,7 @@
 
 	"ZAdmin main zombie"
 	{
-		"es"		"Gestion de Zombi"
+		"es"		"Gestion de Zombie"
 	}
 
 	"ZAdmin main force zspawn"
@@ -892,7 +915,7 @@
 
 	"Spawn protection begin"
 	{
-		"es"		"Los zombis estan presentes, usted tiene {1} segundos para encontrar un lugar seguro antes de perder la inmunidad."
+		"es"		"Los zombies estan presentes, usted tiene {1} segundos para encontrar un lugar seguro antes de perder la inmunidad."
 	}
 
 	"Spawn protection end"
@@ -904,7 +927,7 @@
 
 	"Spawn Protect"
 	{
-		"es"		"La proteccion contra zombis termina en: {1} segundos."
+		"es"		"La proteccion contra zombies termina en: {1} segundos."
 	}
 
 	// ===========================
@@ -928,7 +951,7 @@
 
 	"ZCookies menu main overlay"
 	{
-		"es"		"Humano/Zombi Clase de  Overlay: {1}"
+		"es"		"Humano/Zombie Clase de  Overlay: {1}"
 	}
 
 	"ZCookies zmarket loadout"
@@ -963,7 +986,7 @@
 
 	"ZSpawn command force syntax"
 	{
-		"es"		"Forzar ZSpawn en un Cliente. Uso: zr_zspawn_force <cliente> ['0' = aparecer como humano | '1' = aparecer como zombi]"
+		"es"		"Forzar ZSpawn en un Cliente. Uso: zr_zspawn_force <cliente> ['0' = aparecer como humano | '1' = aparecer como zombie]"
 
 	}
 
@@ -971,11 +994,11 @@
 	{
 		"es"		"El jugador {1} ha sido resucitado correctamente."
 	}
-
-	"ZSpawn command force successful public"
-	{
-		"es"		"@lgreen{1}@default has spawned @green{2}@default as a @lgreen{3}@default." // TODO: Translate
-	}
+	
+	"ZSpawn command force successful public"			
+	{		
+        "es"     	"@lgreen{1}@default ha resucitado a @green{2}@default como @lgreen{3}@default."			
+    }
 
 	"ZSpawn command force unsuccessful"
 	{

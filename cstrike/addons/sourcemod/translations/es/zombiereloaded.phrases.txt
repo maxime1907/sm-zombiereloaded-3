@@ -75,6 +75,11 @@
 	{
 		"es"		"Esta funcion requiere que tu seas humano."
 	}
+
+	"Must be in buyzone"
+	{
+		"es"		"Esta funcion requiere que tu seas en la buyzone."
+	}
 	
 	"Increase by"
 	{
@@ -679,9 +684,9 @@
 		"es"		"Guardar configuracion actual"
 	}
 
-	"Weapons menu zmarket main view loadout"
+	"Weapons menu zmarket main edit  loadout"
 	{
-		"es"		"Ver configuracion actual"
+		"es"		"Editar configuracion actual"
 	}
 
 	"Weapons menu zmarket main rebuy"
@@ -701,7 +706,7 @@
 
 	"Weapons menu zmarket loadout title"
 	{
-		"es"		"ZMarket\nMi configuracion actual:\nSeleccione la ranura de armas para borrar.\nNota: Recompra se refiere a estas armas."
+		"es"		"ZMarket\nMi configuracion actual:\nSeleccione la ranura del arma a modificar.\nNota: Rebuy se refiere a estas armas."
 	}
 
 	"Weapons menu zmarket loadout primary"
@@ -739,14 +744,15 @@
 		"es"       	"Granada Decoy: {1}"			
     }
 
-	"Weapons menu zmarket loadout nvgs"
+	"Weapons menu zmarket loadout default"
 	{
-		"es"		"Vision Nocturna: {1}"
+		"#format"	"{1:s}"
+		"es"		"Predeterminado ({1})"
 	}
 
-	"Weapons menu zmarket loadout empty"
+	"Weapons menu zmarket loadout weapons title"
 	{
-		"es"		"(Ninguno)"
+		"es"		"ZMarket\nSeleccione Carga de armas:"
 	}
 
 	"Weapons menu zmarket types title"

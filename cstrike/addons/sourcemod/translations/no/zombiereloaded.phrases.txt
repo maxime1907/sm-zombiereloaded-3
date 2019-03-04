@@ -77,7 +77,7 @@
 
 	"Must be in buyzone"
 	{
-		"no"		"This feature requires that you are in a buyzone." // TODO: Translate
+		"no"		"Denne funksjonen krever at du kjøper en buyzone."
 	}
 
 	"Increase by"
@@ -599,7 +599,7 @@
 
 	"Weapons zmarket not enough money"
 	{
-		"no"		"You have insufficient funds." // TODO: Translate
+		"no"		"Du har ikke nok midler."
 	}
 
 	"Weapons zmarket updated loadout"
@@ -685,7 +685,7 @@
 
 	"Weapons menu zmarket main edit loadout"
 	{
-		"no"		"Edit Saved Setup" // TODO: Translate
+		"no"		"Rediger lagret oppsett"
 	}
 
 	"Weapons menu zmarket main rebuy"
@@ -700,8 +700,7 @@
 
 	"Weapons menu zmarket loadout title"
 	{
-		"no"		"ZMarket\nGjeldende våpenvalg:\nFjern våpen ved å velge det."
-		//"no"		"ZMarket\nMy Current Setup:\nSelect weapon slot to modify.\nNote: Rebuy refers to these weapons.\nYou will spawn with these weapons." // TODO: Translate
+		"no"		"ZMarket\nGjeldende våpenvalg:\nVelg våpenspor for å endre.\nOpmerking: Rebuy verwijst naar deze wapens."
 	}
 
 	"Weapons menu zmarket loadout primary"
@@ -717,12 +716,12 @@
 	"Weapons menu zmarket loadout default"
 	{
  		"#format"	"{1:s}"
-		"no"		"Default ({1})" // TODO: Translate
+		"no"		"Misligholde ({1})"
 	}
 
 	"Weapons menu zmarket loadout weapons title"
 	{
-		"no"		"ZMarket\nSelect Weapon Loadout:" // TODO: Translate
+		"no"		"ZMarket\nVelg Våpenbelastning:"
 	}
 
 	"Weapons menu zmarket types title"

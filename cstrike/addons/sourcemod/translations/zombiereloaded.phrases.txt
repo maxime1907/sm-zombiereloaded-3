@@ -733,9 +733,9 @@
 		"en"		"Save Current Setup"
 	}
 
-	"Weapons menu zmarket main view loadout"
+	"Weapons menu zmarket main edit loadout"
 	{
-		"en"		"View Saved Setup"
+		"en"		"Edit Saved Setup"
 	}
 
 	"Weapons menu zmarket main rebuy"
@@ -756,7 +756,7 @@
 
 	"Weapons menu zmarket loadout title"
 	{
-		"en"		"ZMarket\nMy Current Setup:\nSelect weapon slot to clear.\nNote: Rebuy refers to these weapons."
+		"en"		"ZMarket\nMy Current Setup:\nSelect weapon slot to modify.\nNote: Rebuy refers to these weapons."
 	}
 
 	"Weapons menu zmarket loadout primary"
@@ -801,15 +801,15 @@
 		"en"		"Decoy Grenade: {1}"
 	}
 
-	"Weapons menu zmarket loadout nvgs"
+	"Weapons menu zmarket loadout default"
 	{
 		"#format"	"{1:s}"
-		"en"		"NVGs: {1}"
+		"en"		"Default ({1})"
 	}
 
-	"Weapons menu zmarket loadout empty"
+	"Weapons menu zmarket loadout weapons title"
 	{
-		"en"		"(None)"
+		"en"		"ZMarket\nSelect Weapon Loadout:"
 	}
 
 	"Weapons menu zmarket types title"

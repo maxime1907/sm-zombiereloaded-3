@@ -1058,9 +1058,6 @@ stock bool:ZMarketEquip(client, const String:weapon[], bool:rebuy = false)
         AccountSetClientCash(client, cash - itemprice);
     }
     
-    // Set client's new cash after purchase.
-    AccountSetClientCash(client, cash - itemprice);
-    
     // Get a list of the client's current weapons.
     new weapons[WeaponsSlot];
     WeaponsGetClientWeapons(client, weapons);
@@ -1337,11 +1334,10 @@ ZMarketRebuy(client, bool:autorebuy = false)
 
     if(autorebuy)
     {
-        TranslationPrintToChat(client, "Weapons zmarket auto-rebuy toggle on");
         // Always equip kevlar and hegrenade
         ZMarketEquip(client, "Kevlar Vest", autorebuy);
         ZMarketEquip(client, "HEGrenade", autorebuy);
-     }
+    }
 }
 
 /**

@@ -35,6 +35,11 @@
  */
 
 /**
+ * Slots saved for auto-rebuy
+ */
+#define ZMARKET_REBUY_WEAPONS_SLOTS_MAX 1
+
+/**
  * Variable to store buyzone offset value.
  */
 new g_iToolsInBuyZone;
@@ -63,7 +68,7 @@ new bool:g_bZMarketWeaponsBought[MAXPLAYERS + 1];
 /**
  * Cookie handle array for weapon loadouts.
  */
-new Handle:g_hZMarketLoadoutCookie[WEAPONS_SLOTS_MAX + 1];
+new Handle:g_hZMarketLoadoutCookie[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1];
 
 new bool:g_bZMarketCommandInitialized = false;
 
@@ -89,7 +94,7 @@ ZMarketOnCookiesCreate()
     decl String:rebuycookiedesc[64];
     
     // x = Weapon slot.
-    for (new x = 0; x < WEAPONS_SLOTS_MAX + 1; x++)
+    for (new x = 0; x < ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1; x++)
     {
         // Format cookie name and description.
         Format(rebuycookiename, sizeof(rebuycookiename), "%s_%d", ZMARKET_COOKIE_REBUY, x);
@@ -467,8 +472,8 @@ bool:ZMarketMenuLoadout(client)
     new Handle:menu_zmarket_loadout = CreateMenu(ZMarketMenuLoadoutHandle);
     
     // Transfer cookie values into an array.
-    new String:rebuyweapons[WeaponsSlot][WEAPONS_MAX_LENGTH];
-    ZMarketCookiesToArray(client, rebuyweapons, WEAPONS_SLOTS_MAX + 1, sizeof(rebuyweapons[]));
+    new String:rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][WEAPONS_MAX_LENGTH];
+    ZMarketCookiesToArray(client, rebuyweapons, sizeof(rebuyweapons), sizeof(rebuyweapons[]));
     
     SetGlobalTransTarget(client);
 
@@ -1065,12 +1070,15 @@ stock bool:ZMarketEquip(client, const String:weapon[], bool:rebuy = false)
     // Check if client is buying the weapon or ammo for it.
     if (!hasweapon || slot == Slot_Projectile || slot == Slot_NVGs || slot == Slot_Decoy || slot == Slot_FireGrenade)
     {
-        // If the item is a projectile or NVGs, then skip.
+	int oldclip = -1;
+        
+	// If the item is a projectile or NVGs, then skip.
         if (slot != Slot_Projectile && slot != Slot_NVGs && slot != Slot_Decoy && slot != Slot_FireGrenade) 
         {
             // If there is already a weapon in the slot, then force client to drop it.
             if (weapons[slot] > -1)
             {
+		oldclip = GetEntProp(weapons[slot], Prop_Send, "m_iClip1");
                 if(rebuy)
                 {
                     // Kill weapon right away to decrease amount of entities on roundstart.
@@ -1084,6 +1092,7 @@ stock bool:ZMarketEquip(client, const String:weapon[], bool:rebuy = false)
             }
         }
         
+	int entity = INVALID_ENT_REFERENCE;
         if (StrEqual(weaponentity, "item_kevlar"))
         {
             SetEntProp(client, Prop_Send, "m_ArmorValue", 100);
@@ -1092,7 +1101,7 @@ stock bool:ZMarketEquip(client, const String:weapon[], bool:rebuy = false)
         else
         {
             // Give client the weapon.
-            GivePlayerItem(client, weaponentity);
+            entity = GivePlayerItem(client, weaponentity);
         }
         
         // If client isn't rebuying the weapon, then tell them the weapon has been purchased.
@@ -1103,6 +1112,20 @@ stock bool:ZMarketEquip(client, const String:weapon[], bool:rebuy = false)
 
             // If client isn't rebuying the weapon, then tell them the weapon has been purchased.
             TranslationPrintToChat(client, "Weapons zmarket purchase", weapondisplay);
+
+            new bool:zmarketnorefill = GetConVarBool(g_hCvarsList[CVAR_WEAPONS_ZMARKET_NOREFILL]);
+            if (IsValidEntity(entity) && !WeaponsIsClientInBuyZone(client) && zmarketnorefill)
+            {
+                int newclip = 0;
+                if (oldclip != -1)
+                {
+                    newclip = GetEntProp(entity, Prop_Send, "m_iClip1");
+                    if(newclip > oldclip)
+                        newclip = oldclip;
+                }
+
+                SetEntProp(entity, Prop_Send, "m_iClip1", newclip);
+            }
         }
     }
     else if (!rebuy)
@@ -1175,7 +1198,7 @@ bool:ZMarketGetCurrentLoadout(client)
     decl String:weaponentity[WEAPONS_MAX_LENGTH];
     
     // x = Weapon slot.
-    for (new x = 0; x < WEAPONS_SLOTS_MAX; x++)
+    for (new x = 0; x < ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1; x++)
     {
         // If slot is empty, then clear this slot in rebuy cache and stop.
         if (weapons[x] == -1)
@@ -1209,7 +1232,7 @@ bool:ZMarketGetCurrentLoadout(client)
  * @param maxweapons    The max amount of weapons in the array.
  * @param maxlen        The max length of each cookie result.
  */
-stock ZMarketArrayToCookies(client, String:rebuyweapons[WeaponsSlot][], maxweapons, maxlen)
+stock ZMarketArrayToCookies(client, String:rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][], maxweapons, maxlen)
 {
     decl String:rebuycookiename[32];
     new Handle:rebuycookie;
@@ -1235,7 +1258,7 @@ stock ZMarketArrayToCookies(client, String:rebuyweapons[WeaponsSlot][], maxweapo
  * @param maxweapons    The max amount of weapons in the array.
  * @param maxlen        The max length of each cookie result.
  */
-stock ZMarketCookiesToArray(client, String:rebuyweapons[WeaponsSlot][], maxweapons, maxlen)
+stock ZMarketCookiesToArray(client, String:rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][], maxweapons, maxlen)
 {
     decl String:rebuycookiename[32];
     new Handle:rebuycookie;
@@ -1307,11 +1330,11 @@ ZMarketRebuy(client, bool:autorebuy = false)
     }
     
     // Transfer cookie values into an array.
-    new String:rebuyweapons[WeaponsSlot][WEAPONS_MAX_LENGTH];
-    ZMarketCookiesToArray(client, rebuyweapons, WEAPONS_SLOTS_MAX + 1, sizeof(rebuyweapons[]));
+    new String:rebuyweapons[ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1][WEAPONS_MAX_LENGTH];
+    ZMarketCookiesToArray(client, rebuyweapons, sizeof(rebuyweapons), sizeof(rebuyweapons[]));
     
     // x = Weapon slot.
-    for (new x = 0; x < WEAPONS_SLOTS_MAX + 1; x++)
+    for (new x = 0; x < ZMARKET_REBUY_WEAPONS_SLOTS_MAX + 1; x++)
     {
         // If slot is empty, then use the default value.
         if (!rebuyweapons[x][0])
@@ -1329,14 +1352,30 @@ ZMarketRebuy(client, bool:autorebuy = false)
             }
         }
         
-        ZMarketEquip(client, rebuyweapons[x], autorebuy);
+	if (!RestrictIsWeaponRestricted(WeaponsNameToIndex(rebuyweapons[x])))
+            ZMarketEquip(client, rebuyweapons[x], autorebuy);
     }
 
     if(autorebuy)
     {
         // Always equip kevlar and hegrenade
-        ZMarketEquip(client, "Kevlar Vest", autorebuy);
-        ZMarketEquip(client, "HEGrenade", autorebuy);
+        if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("Kevlar Vest")))
+            ZMarketEquip(client, "Kevlar Vest", autorebuy);
+
+        if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("HEGrenade")))
+            ZMarketEquip(client, "HEGrenade", autorebuy);
+
+        if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("Smokegrenade")))
+            ZMarketEquip(client, "Smokegrenade", autorebuy);
+
+        if (g_Game == Game_CSGO)
+        {
+            if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("Healthshot")))
+                ZMarketEquip(client, "Healthshot", autorebuy);
+
+            if (!RestrictIsWeaponRestricted(WeaponsNameToIndex("TAGrenade")))
+                ZMarketEquip(client, "TAGrenade", autorebuy);
+        }
     }
 }
 

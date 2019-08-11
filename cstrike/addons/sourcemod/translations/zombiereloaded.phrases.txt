@@ -638,6 +638,11 @@
 		"en"		"You may only carry {1} grenade(s) of this type."
 	}
 
+	"Weapons zmarket not enough money"
+	{
+		"en"		"You don't have enough money to buy this weapon."
+	}
+
 	"Weapons zmarket auto-rebuy toggle on"
 	{
 		"en"		"Auto-rebuy has been enabled, your loadout will be automatically purchased for you each time you spawn."
